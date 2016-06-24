@@ -1,0 +1,55 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Based on "Basic Auth Example"
+  description: >
+    An example for how to use Auth with Swagger.
+
+host: localhost:8000
+schemes:
+  - http
+paths:
+  /:
+    get:
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: 'Will send `Authenticated`'
+  /event:
+    get:
+      parameters:
+        - in: query
+          name: token
+          required: true
+          type: string
+          description: "Authentication Token"
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Will send `Authenticated`'
+        '401': 
+          description: 'Invalid Authentication Token'
+        '403': 
+          description: 'You do not have necessary permissions for the resource'
+  /auth:
+    post:
+      parameters:
+        - description: "A todo Object"
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "Login Succesful"
+        '401':
+          description: "Authentication Error"
