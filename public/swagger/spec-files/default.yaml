@@ -1,42 +1,22 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: Based on "Basic Auth Example"
+  title: MyPet API
   description: >
-    An example for how to use Auth with Swagger.
+    La API que expone el servidor MyPet
 
-host: localhost:8000
+host: localhost:8080
 schemes:
   - http
+consumes:
+  - application/json
+produces:
+  - application/json
 paths:
-  /:
-    get:
-      produces:
-        - text/html
-      responses:
-        '200':
-          description: 'Will send `Authenticated`'
-  /event:
-    get:
-      parameters:
-        - in: query
-          name: token
-          required: true
-          type: string
-          description: "Authentication Token"
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: 'Will send `Authenticated`'
-        '401': 
-          description: 'Invalid Authentication Token'
-        '403': 
-          description: 'You do not have necessary permissions for the resource'
   /auth:
     post:
       parameters:
-        - description: "A todo Object"
+        - description: Credenciales de autenticación
           in: body
           name: body
           required: true
@@ -49,7 +29,84 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
-          description: "Login Succesful"
-        '401':
-          description: "Authentication Error"
+        200:
+          description: Conexión correcta
+          schema:
+            properties:
+              token:
+                type: string
+                description: Token de login. Se deberá usar en todos los llamados a la api.
+        400:
+          $ref: "#/responses/BadRequest"
+        401:
+          $ref: "#/responses/Unauthorized"
+  /user:
+    post:
+      description: Crear un usuario
+      parameters:
+        - description: Datos de usuario
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserData"
+      responses:
+        200:
+          $ref: "#/responses/Success"
+        400:
+          $ref: "#/responses/BadRequest"
+        401:
+          $ref: "#/responses/Unauthorized"
+    put:
+      description: Modificar un usuario
+      parameters:
+        - description: Datos de usuario
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserData"
+      responses:
+        200:
+          $ref: "#/responses/Success"
+        400:
+          $ref: "#/responses/BadRequest"
+        401:
+          $ref: "#/responses/Unauthorized"
+definitions:
+  UserData:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  Error:
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          description:
+            type: string
+            description: Representación en texto del error
+          code:
+            type: integer
+            description: Código de error
+responses:
+  Success:
+    description: Acción realizada correctamente
+    schema:
+      type: object
+      properties:
+        success:
+          description: Mensaje
+  Unauthorized:
+    description: Error de autenticación
+    schema:
+      $ref: "#/definitions/Error"
+  BadRequest:
+    description: No se especificaron todos los parametros necesarios
+    schema:
+      $ref: "#/definitions/Error"
+  
