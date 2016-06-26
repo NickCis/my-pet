@@ -13,11 +13,11 @@ export function middleware(secret) {
   return (req, res, next) => {
     req.session = {};
 
-    if(!req.params.token)
+    if (!req.params.token)
       return next();
 
     jwt.verify(req.params.token, secret, (err, session) => {
-      if(!err)
+      if (!err)
         req.session = session;
       next();
     });

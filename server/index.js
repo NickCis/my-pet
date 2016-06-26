@@ -1,6 +1,6 @@
 import path from 'path';
 import restify from 'restify';
-import config from 'config'
+import config from 'config';
 
 import api from './api';
 import * as db from './db';

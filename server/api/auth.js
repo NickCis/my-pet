@@ -2,13 +2,13 @@
 import config from 'config';
 import jwt from 'jsonwebtoken';
 
-export function post (req, res) {
+export function post(req, res) {
   // TODO: usar scape (mirar libreria de pg para eso)
   const sql = `SELECT * from users where username = '${req.params.username}' AND password = '${req.params.password}'`;
 
   req.db.doQuery(sql)
     .then(result => {
-      if(result.rows.length > 0){
+      if (result.rows.length > 0) {
         res.status(200);
         const token = jwt.sign({
           username: result.rows[0].username
@@ -17,7 +17,7 @@ export function post (req, res) {
       }
 
       res.status(401);
-      res.send({error: {description: "error", code: 401}});
+      res.send({error: {description: 'error', code: 401}});
     })
     .catch(err => {
       console.log('error');

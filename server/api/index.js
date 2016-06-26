@@ -2,7 +2,7 @@ import { Router } from 'restify-router';
 
 import * as auth from './auth';
 import * as user from './user';
-//import * as pet from './pet';
+// import * as pet from './pet';
 
 export default function (server, path) {
   const router = new Router();
