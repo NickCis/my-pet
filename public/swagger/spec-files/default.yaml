@@ -6,6 +6,7 @@ info:
     La API que expone el servidor MyPet
 
 host: localhost:8080
+basePath: /api
 schemes:
   - http
 consumes:
@@ -15,6 +16,7 @@ produces:
 paths:
   /auth:
     post:
+      description: Obtener un token de autenticación
       parameters:
         - description: Credenciales de autenticación
           in: body
@@ -26,6 +28,7 @@ paths:
                 type: string
               password:
                 type: string
+                format: password
       produces:
         - application/json
       responses:
@@ -41,6 +44,18 @@ paths:
         401:
           $ref: "#/responses/Unauthorized"
   /user:
+    get:
+      description: Información de usuario
+      parameters:
+        - $ref: "#/parameters/Token"
+      responses:
+        200:
+          description: Datos de usuario
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
     post:
       description: Crear un usuario
       parameters:
@@ -66,6 +81,7 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/UserData"
+        - $ref: "#/parameters/Token"
       responses:
         200:
           $ref: "#/responses/Success"
@@ -73,6 +89,76 @@ paths:
           $ref: "#/responses/BadRequest"
         401:
           $ref: "#/responses/Unauthorized"
+  /pet:
+    post:
+      description: Crear una mascota
+      parameters:
+        - $ref: "#/parameters/Token"
+        - description: Datos de la mascota
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/PetData"
+      responses:
+        200:
+          description: Mascota creada correctamente
+          schema:
+            $ref: "#/definitions/PetData"
+        400:
+          $ref: "#/responses/BadRequest"
+        401:
+          $ref: "#/responses/Unauthorized"
+    get:
+      description: Obtiene todas tus mascotas
+      parameters:
+        - $ref: "#/parameters/Token"
+      responses:
+        200:
+          description: Todas tus mascotas
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/PetData"
+        401:
+          $ref: "#/responses/Unauthorized"
+  /pet/{id}:
+    parameters:
+      - description: Identificador de la mascota
+        name: id
+        in: path
+        type: string
+        required: true
+      - $ref: "#/parameters/Token"
+    get:
+      description: Obtener datos acerca de una mascota
+      responses:
+        200:
+          description: Datos de mascota
+          schema:
+            $ref: "#/definitions/PetData"
+        400:
+          $ref: "#/responses/BadRequest"
+        401:
+          $ref: "#/responses/Unauthorized"
+    put:
+      description: Modificar datos acerca de una mascota
+      parameters:
+        - description: Datos de la mascota
+          in: body
+          name: body
+          schema:
+            $ref: "#/definitions/PetData"
+      responses:
+        200:
+          description: Datos de mascota
+          schema:
+            $ref: "#/definitions/PetData"
+        400:
+          $ref: "#/responses/BadRequest"
+        401:
+          $ref: "#/responses/Unauthorized"
+      
 definitions:
   UserData:
     type: object
@@ -81,6 +167,16 @@ definitions:
         type: string
       password:
         type: string
+        format: password
+  PetData:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Nombre
+      id:
+        type: string
+        description: Identificador
   Error:
     type: object
     properties:
@@ -93,6 +189,13 @@ definitions:
           code:
             type: integer
             description: Código de error
+parameters:
+  Token:
+    description: Token de autenticación
+    in: query
+    name: token
+    type: string
+    required: true
 responses:
   Success:
     description: Acción realizada correctamente

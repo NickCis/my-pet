@@ -28,6 +28,14 @@ Para correr el servidor:
 $ npm run start
 ```
 
+Para inicializar la base de datos:
+
+```
+$ npm run setup
+```
+
+**Nota:** Se debe antes crear la base de datos y configurar el archivo `config/default.yaml`
+
 ## Swagger
 
 En `/swagger/` esta el editor de API *Swagger* para poder ir haciendo pruebas y especificando la API.
