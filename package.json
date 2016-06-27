@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/nickcis/my-pet#readme",
   "dependencies": {
+    "ajv": "^4.1.4",
     "config": "^1.21.0",
     "js-yaml": "^3.6.1",
     "jsonwebtoken": "^7.0.1",

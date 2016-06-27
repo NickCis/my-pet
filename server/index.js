@@ -5,6 +5,8 @@ import config from 'config';
 import api from './api';
 import * as db from './db';
 import * as session from './session';
+import * as validator from './validator';
+import * as property from './property';
 
 export default class Server {
   constructor() {
@@ -25,6 +27,8 @@ export default class Server {
         console.log('Connection to database :: Ok!');
     }));
     this.server.use(session.middleware(config.get('SessionSecret')));
+    this.server.use(validator.middleware());
+    this.server.use(property.middleware('config', config));
   }
 
   setUpRoutes() {

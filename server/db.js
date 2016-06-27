@@ -48,18 +48,17 @@ export function middleware(config, cb) {
   if (typeof cb !== 'function')
     cb = () => {};
 
-  const db = connectDB(config)
+  let db;
+  connectDB(config)
     .then(client => {
+      db = client;
       cb(undefined, client);
-      return client;
     })
     .catch(err => cb(err));
 
   return (req, res, next) => {
-    db.then(client => {
-      req.db = client;
-      return next();
-    });
+    req.db = db;
+    next();
   };
 }
 
