@@ -14,7 +14,7 @@ export function post(req, res, next) {
         return res.json(200, {token});
       }
 
-      res.send(new ApiError(401, "Credenciales erroneas"));
+      res.send(new ApiError(401, 'Credenciales erroneas'));
     })
     .catch(err => res.send(new ApiError(500, err)))
     .then(() => next());

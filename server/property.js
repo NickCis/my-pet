@@ -12,5 +12,5 @@ export function middleware(name, property) {
   return (req, res, next) => {
     req[name] = property;
     return next();
-  }
+  };
 }
