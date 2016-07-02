@@ -34,7 +34,7 @@ Para inicializar la base de datos:
 $ npm run setup
 ```
 
-**Nota:** Se debe antes crear la base de datos y configurar el archivo `config/default.yaml`
+**Nota:** Se debe antes crear la base de datos *my-pet* y configurar el archivo `config/default.yaml`
 
 ## Swagger
 
