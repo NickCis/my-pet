@@ -28,6 +28,12 @@ Para correr el servidor:
 $ npm run start
 ```
 
+O para correrlo con modulo de hot reload (ideal para develop mas comodo):
+
+```
+$ npm run hot-start
+```
+
 Para inicializar la base de datos:
 
 ```
