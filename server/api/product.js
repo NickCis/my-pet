@@ -7,24 +7,15 @@ export function post(request, response, next){
 		// TODO: agregar fotos
 		required: ['name', 'description', 'price','type'],
 		properties: {
-			token: {type: 'string'},
 			name: {type: 'string', minLength: 5},
 			description: {type: 'string', minLength: 10},
-<<<<<<< Updated upstream
-			price: {type: 'number'},
-=======
 			price: {type: 'integer', minimum: 0},
->>>>>>> Stashed changes
 			type: {
 				"enum" : [ "producto" , "servicio" , "servicio-profesional"]
 			}
 		}
 	}));
 
-<<<<<<< Updated upstream
-	response.json(200,{sucess:true});
-	next();
-=======
 	const query = `INSERT into products (name, description, price, type) VALUES(
 		'${request.params.name}','${request.params.description}','${request.params.price}','${request.params.type}'
 	) RETURNING id as PRODUCT_ID`;
@@ -37,7 +28,6 @@ export function post(request, response, next){
 	}).catch(err => response.send(new ApiError(500 , err)))
 	.then( () => next());
 }
->>>>>>> Stashed changes
 
 
 // Dado un id devuelve un producto
