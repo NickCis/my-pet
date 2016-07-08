@@ -15,8 +15,8 @@ export default function (server, path) {
 
   // e-commerce
   router.post('/product',product.post);
-  router.get('/product',product.get);
-  router.get('/product/search',product.get);
+  router.get('/product/search',product.getWithName);
+  router.get('/product/:id',product.get);
 
 
   router.applyRoutes(server, path);
