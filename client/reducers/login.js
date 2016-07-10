@@ -4,27 +4,20 @@ export default function(state={}, action) {
   switch(action.type) {
     case REQUEST_LOGIN:
       return {
-        ...state,
         isFetching: true,
-        token: '',
-        username: action.username,
-        error: undefined
+        username: action.username
       };
 
     case FINISHED_LOGIN:
       return {
-        ...state,
+        username: state.username,
         isFetching: false,
-        token: action.token,
-        error: undefined
+        token: action.token
       };
 
     case ERROR_LOGIN:
       return {
-        ...state,
         isFetching: false,
-        token: '',
-        username: '',
         error: action.error
       };
   }

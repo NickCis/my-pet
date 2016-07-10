@@ -3,7 +3,8 @@ import React, { Component, PropTypes } from 'react';
 export default class Navbar extends Component {
   static get propTypes() {
     return {
-      onChangePage: PropTypes.func.isRequired
+      onChangePage: PropTypes.func.isRequired,
+      username: PropTypes.string
     };
   }
 
@@ -15,6 +16,24 @@ export default class Navbar extends Component {
   }
 
   renderNavbarRight() {
+    const { username } = this.props;
+    if(username)
+      return (
+          <ul className="nav navbar-nav navbar-right">
+            <li className="dropdown">
+              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ username }<span className="caret" /></a>
+              <ul className="dropdown-menu">
+              <li><a href="#">Perfil</a></li>
+              <li><a href="#">Mascotas</a></li>
+              <li><a href="#">Venta</a></li>
+              <li><a href="#">Algo</a></li>
+              <li role="separator" className="divider"></li>
+              <li><a href="#">Desconectarse</a></li>
+              </ul>
+            </li>
+          </ul>
+      );
+
     return (
       <ul className="nav navbar-nav navbar-right">
         <li className="visible-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onClick={ this.getChangePageHandler('Login') }>Conectate</a></li>

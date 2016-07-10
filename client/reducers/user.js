@@ -10,8 +10,8 @@ export default function(state={}, action) {
 
     case FINISHED_REGISTER:
       return {
-        ...state,
         isFetching: false,
+        success: true
       };
 
     case ERROR_REGISTER:

@@ -29,13 +29,34 @@ class Register extends Component {
     return "Registrate";
   }
 
+  getChangePageHandler(page) {
+    const { onChangePage } = this.props;
+    return ev => {
+      ev.preventDefault();
+      onChangePage(page);
+    };
+  }
+
+  renderSuccess() {
+    return (
+      <div>
+        <h2 className="form-signin-heading">Registrate</h2>
+        <p>Te registraste correctamente! <a href="#" onClick={ this.getChangePageHandler('Login') }>Conectate!</a></p>
+      </div>
+    );
+
+  }
+
   render() {
     const onSubmit = ev => {
       ev.preventDefault();
       this.props.onRegister(ev.target.registerUsername.value, ev.target.registerPassword.value);
     };
 
-    const { isFetching } = this.props;
+    const { isFetching, success } = this.props;
+
+    if(success)
+      return this.renderSuccess();
 
     return (
       <form onSubmit={ onSubmit }>
@@ -61,6 +82,7 @@ class Register extends Component {
 
 const mapStateToProps = state => {
   return {
+    success: state.user.success,
     registerError: state.user.error,
     isFetching: state.user.isFetching
   };

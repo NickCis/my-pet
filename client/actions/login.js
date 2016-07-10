@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
+import { changePageIfNeeded } from './';
+
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const FINISHED_LOGIN = 'FINISHED_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
@@ -11,21 +13,28 @@ function requestLogin(username) {
   };
 }
 
-function finishedLogin(json) {
-  if(json.error)
-    return {
-      type: ERROR_LOGIN,
-      error: json.error
-    };
-
+function errorLogin(error) {
   return {
-    type: FINISHED_LOGIN,
-    token: json.token
+    type: ERROR_LOGIN,
+    error: error
   };
 }
 
+function finishedLogin(token) {
+  return {
+    type: FINISHED_LOGIN,
+    token: token
+  };
+}
+
+function checkLogin(json) {
+  if(json.token)
+    return json.token;
+  return Promise.reject(json.error);
+}
+
 function doLogin(username, password) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(requestLogin(username));
     return fetch('/api/auth', {
       method: 'POST',
@@ -39,7 +48,15 @@ function doLogin(username, password) {
       })
     })
       .then(response => response.json())
-      .then(json => dispatch(finishedLogin(json)));
+      .then(checkLogin)
+      .then(token => dispatch(finishedLogin(token)))
+      .then(() => {
+        let prevPage = getState().page.previous;
+        if(['Register', 'Login'].indexOf(prevPage) != -1)
+          prevPage = 'Home';
+        return dispatch(changePageIfNeeded(prevPage));
+      })
+      .catch(error => dispatch(errorLogin(error)))
   };
 }
 

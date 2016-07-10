@@ -9,10 +9,10 @@ import * as Pages from './pages';
 
 class App extends Component {
   render() {
-    const { currentPage, onChangePage } = this.props;
+    const { currentPage, username, onChangePage } = this.props;
     return (
       <div>
-        <Navbar onChangePage={ onChangePage } />
+        <Navbar onChangePage={ onChangePage } username={ username }/>
         <div className='container'>
           { currentPage }
         </div>
@@ -29,7 +29,8 @@ const pageFactory = state => {
 
 const mapStateToProps = state => {
   return {
-    currentPage: pageFactory(state)
+    currentPage: pageFactory(state),
+    username: state.login.username
   };
 };
 
