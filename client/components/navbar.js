@@ -16,10 +16,13 @@ export default class Navbar extends Component {
 
   renderNavbarRight() {
     return (
-      <div className="nav navbar-nav navbar-right">
-        <button type="button" className="btn btn-default navbar-btn" onClick={ this.getChangePageHandler('Login') }>Conectate</button>
-        <button type="button" className="btn btn-success navbar-btn" onClick={ this.getChangePageHandler('Register') }>Registrate</button>
-      </div>
+      <ul className="nav navbar-nav navbar-right">
+        <li className="visible-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onClick={ this.getChangePageHandler('Login') }>Conectate</a></li>
+        <li className="hidden-xs"><button type="button" className="btn btn-default navbar-btn" onClick={ this.getChangePageHandler('Login') }>Conectate</button></li>
+
+        <li className="visible-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onClick={ this.getChangePageHandler('Register') }>Registrate</a></li>
+        <li className="hidden-xs"><button type="button" className="btn btn-success navbar-btn" onClick={ this.getChangePageHandler('Register') }>Registrate</button></li>
+      </ul>
     );
   }
 
@@ -38,7 +41,7 @@ export default class Navbar extends Component {
               <img alt="My Pet" id="logo" src="/img/logo.png" />
             </a>
           </div>
-          <div className="navbar-collapse collapse">
+          <div id="navbar" className="navbar-collapse collapse">
             <form className="navbar-form navbar-left" role="search">
               <div className="form-group">
                 <input type="text" className="form-control" placeholder="Buscar" />
