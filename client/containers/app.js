@@ -1,20 +1,21 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import { changePageIfNeeded } from '../actions';
+
+import Navbar from '../components/navbar';
 
 import * as Pages from './pages';
 
 class App extends Component {
-  static get propTypes() {
-    return {};
-  }
-
   render() {
-    const { currentPage } = this.props;
+    const { currentPage, onChangePage } = this.props;
     return (
       <div>
-        { currentPage }
+        <Navbar onChangePage={ onChangePage } />
+        <div className='container'>
+          { currentPage }
+        </div>
       </div>
     );
   }
@@ -33,7 +34,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    onChangePage: page => dispatch(changePageIfNeeded(page))
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

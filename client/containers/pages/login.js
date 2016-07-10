@@ -46,14 +46,14 @@ class Login extends Component {
 
     return (
       <form className="form-signin" onSubmit={ onSubmit }>
-        <h2 className="form-signin-heading">Please sign in</h2>
+        <h2 className="form-signin-heading">Conectate</h2>
         <div className="form-group">
-          <label htmlFor="loginUsername" className="sr-only">Email address</label>
-          <input type="text" id="loginUsername" className="form-control" placeholder="Email address" required autoFocus disabled={ isFetching } />
+          <label htmlFor="loginUsername" className="sr-only">Usuario</label>
+          <input type="text" id="loginUsername" className="form-control" placeholder="Usuario" required autoFocus disabled={ isFetching } />
         </div>
         <div className="form-group">
-          <label htmlFor="loginPassword" className="sr-only">Password</label>
-          <input type="password" id="loginPassword" className="form-control" placeholder="Password" required disabled={ isFetching } />
+          <label htmlFor="loginPassword" className="sr-only">Contrase&ntilde;a</label>
+          <input type="password" id="loginPassword" className="form-control" placeholder="Contrase&ntilde;a" required disabled={ isFetching } />
         </div>
         { this.renderError() }
         <p className="help-block">Nuevo? <a href="#" onClick={ this.getRegisterHandler() }>Registrate</a></p>
