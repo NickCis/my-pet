@@ -37,7 +37,7 @@ export default class Navbar extends Component {
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="#" onClick={ this.getChangePageHandler('Home') }>
               <img alt="My Pet" id="logo" src="/img/logo.png" />
             </a>
           </div>
