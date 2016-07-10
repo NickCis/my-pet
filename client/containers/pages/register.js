@@ -42,12 +42,12 @@ class Register extends Component {
         <h2 className="form-signin-heading">Registrate</h2>
         { this.renderError() }
         <div className="form-group">
-          <label htmlFor="registerUsername">Email address</label>
+          <label htmlFor="registerUsername">Usuario</label>
           <input type="text" id="registerUsername" className="form-control" placeholder="Nombre de Usuario" required autoFocus disabled={ isFetching } />
           <p className="help-block">M&aacute;s de 6 car&aacute;cteres</p>
         </div>
         <div className="form-group">
-          <label htmlFor="registerPassword">Password</label>
+          <label htmlFor="registerPassword">Contrase&ntilde;a</label>
           <input type="password" id="registerPassword" className="form-control" placeholder="Password" required disabled={ isFetching } />
           <p className="help-block">M&aacute;s de 6 car&aacute;cteres</p>
         </div>

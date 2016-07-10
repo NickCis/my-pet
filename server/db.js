@@ -59,7 +59,8 @@ export function middleware(config, cb) {
 
   return (req, res, next) => {
     req.hasDBError = () => {
-      return new ApiError(500, 'No se puede conectar a la db');
+      if(!db)
+        return new ApiError(500, 'No se puede conectar a la db');
     };
     req.db = db;
     next();
