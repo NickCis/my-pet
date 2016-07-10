@@ -7,14 +7,16 @@ export default function(state={}, action) {
         ...state,
         isFetching: true,
         token: '',
-        username: action.username
+        username: action.username,
+        error: undefined
       };
 
     case FINISHED_LOGIN:
       return {
         ...state,
         isFetching: false,
-        token: action.token
+        token: action.token,
+        error: undefined
       };
 
     case ERROR_LOGIN:

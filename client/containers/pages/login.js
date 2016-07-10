@@ -1,9 +1,41 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { changePageIfNeeded } from '../../actions';
 import { doLoginIfNeeded } from '../../actions/login';
 
 class Login extends Component {
+  renderError() {
+    const { loginError } = this.props;
+
+    if(loginError)
+      return (
+        <div className="alert alert-danger" role="alert">
+          <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true" />
+          <span className="sr-only">Error:</span>
+          { loginError.description }
+        </div>
+      );
+  }
+
+  renderInnerButton() {
+    if(this.props.isFetching)
+      return (
+        <span>
+          <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />  Cargando...
+        </span>
+      );
+
+    return "Conectate";
+  }
+
+  getRegisterHandler() {
+    return ev => {
+      ev.preventDefault();
+      this.props.onChangePage('Register');
+    };
+  }
+
   render() {
     const onSubmit = ev => {
       ev.preventDefault();
@@ -15,16 +47,19 @@ class Login extends Component {
     return (
       <form className="form-signin" onSubmit={ onSubmit }>
         <h2 className="form-signin-heading">Please sign in</h2>
-        <label aria-for="loginUsername" className="sr-only">Email address</label>
-        <input type="email" id="loginUsername" className="form-control" placeholder="Email address" required aria-autofocus disabled={ isFetching} />
-        <label aria-for="loginPassword" className="sr-only">Password</label>
-        <input type="password" id="loginPassword" className="form-control" placeholder="Password" required disabled={ isFetching} />
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me" /> Remember me
-          </label>
+        <div className="form-group">
+          <label htmlFor="loginUsername" className="sr-only">Email address</label>
+          <input type="email" id="loginUsername" className="form-control" placeholder="Email address" required autoFocus disabled={ isFetching } />
         </div>
-        <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <div className="form-group">
+          <label htmlFor="loginPassword" className="sr-only">Password</label>
+          <input type="password" id="loginPassword" className="form-control" placeholder="Password" required disabled={ isFetching } />
+        </div>
+        { this.renderError() }
+        <p className="help-block">Nuevo? <a href="#" onClick={ this.getRegisterHandler() }>Registrate</a></p>
+        <button className="btn btn-lg btn-primary btn-block" type="submit" disabled={ isFetching }>
+          { this.renderInnerButton() }
+        </button>
       </form>
     )
   }
@@ -33,13 +68,14 @@ class Login extends Component {
 const mapStateToProps = state => {
   return {
     loginError: state.login.error,
-    ifFetching: state.login.isFetching
+    isFetching: state.login.isFetching
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogin: (username, password) => dispatch(doLoginIfNeeded(username, password))
+    onLogin: (username, password) => dispatch(doLoginIfNeeded(username, password)),
+    onChangePage: page => dispatch(changePageIfNeeded(page))
   };
 };
 

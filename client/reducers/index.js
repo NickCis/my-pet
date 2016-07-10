@@ -4,8 +4,8 @@ import page from './page';
 import login from './login';
 
 const rootReducer = combineReducers({
-  login: login,
-  page: page
+  login,
+  page
 });
 
 export default rootReducer
