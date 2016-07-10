@@ -5,3 +5,6 @@ export { NotFound };
 
 import Login from './login';
 export { Login };
+
+import Register from './register';
+export { Register };

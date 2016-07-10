@@ -49,7 +49,7 @@ class Login extends Component {
         <h2 className="form-signin-heading">Please sign in</h2>
         <div className="form-group">
           <label htmlFor="loginUsername" className="sr-only">Email address</label>
-          <input type="email" id="loginUsername" className="form-control" placeholder="Email address" required autoFocus disabled={ isFetching } />
+          <input type="text" id="loginUsername" className="form-control" placeholder="Email address" required autoFocus disabled={ isFetching } />
         </div>
         <div className="form-group">
           <label htmlFor="loginPassword" className="sr-only">Password</label>

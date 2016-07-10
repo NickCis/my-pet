@@ -1,4 +1,5 @@
 export function post(req, res, next) {
+  next.ifError(req.hasDBError());
   next.ifError(req.params.validationError({
     required: ['username', 'password'],
     properties: {
@@ -16,6 +17,7 @@ export function post(req, res, next) {
 }
 
 export function get(req, res, next) {
+  next.ifError(req.hasDBError());
   next.ifError(req.hasSessionError());
 
   res.json(200, {username: req.session.username});
