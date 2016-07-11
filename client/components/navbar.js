@@ -25,7 +25,7 @@ export default class Navbar extends Component {
               <ul className="dropdown-menu">
               <li><a href="#" onClick={ this.getChangePageHandler('Profile') }>Perfil</a></li>
               <li><a href="#">Mascotas</a></li>
-              <li><a href="#">Venta</a></li>
+              <li><a href="#" onClick={ this.getChangePageHandler('NewProduct') }>Venta</a></li>
               <li><a href="#">Algo</a></li>
               <li role="separator" className="divider"></li>
               <li><a href="#">Desconectarse</a></li>

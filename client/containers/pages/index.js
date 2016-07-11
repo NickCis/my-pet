@@ -14,3 +14,6 @@ export { Register };
 
 import Profile from './profile';
 export { Profile };
+
+import NewProduct from './new_product';
+export { NewProduct };
