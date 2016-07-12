@@ -12,7 +12,6 @@ export function post(req, res, next) {
   }));
 
   // TODO: usar scape (mirar libreria de pg para eso)
-  console.log(req.params)
   const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
   req.db.doQuery(sql)
     .then(() => res.json(200, {success: true}))
