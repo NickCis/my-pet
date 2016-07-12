@@ -82,6 +82,14 @@ export function create(config) {
           PRIMARY KEY (id),
           UNIQUE(username)
       )`,
+    `CREATE TABLE IF NOT EXISTS "pets" (
+            id serial NOT NULL,
+            name varchar(40) NOT NULL,
+            owner integer references users(id),
+            birthdate date NOT NULL,
+            breed varchar(40) NOT NULL,
+            PRIMARY KEY (id)
+        )`,
   ].forEach(sql => {
     promise = promise.then(result => {
       return result.client.doQuery(sql);
