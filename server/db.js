@@ -90,6 +90,12 @@ export function create(config) {
             breed varchar(40) NOT NULL,
             PRIMARY KEY (id)
         )`,
+    `CREATE TABLE IF NOT EXISTS "likes" (
+            pet1 integer references pets(id),
+            pet2 integer references pets(id),
+            result integer NOT NULL,
+            PRIMARY KEY (pet1,pet2)
+        )`,
   ].forEach(sql => {
     promise = promise.then(result => {
       return result.client.doQuery(sql);
