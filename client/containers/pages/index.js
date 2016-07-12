@@ -11,3 +11,6 @@ export { Login };
 
 import Register from './register';
 export { Register };
+
+import Profile from './profile';
+export { Profile };

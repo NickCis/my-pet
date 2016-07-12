@@ -23,7 +23,7 @@ export default class Navbar extends Component {
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ username }<span className="caret" /></a>
               <ul className="dropdown-menu">
-              <li><a href="#">Perfil</a></li>
+              <li><a href="#" onClick={ this.getChangePageHandler('Profile') }>Perfil</a></li>
               <li><a href="#">Mascotas</a></li>
               <li><a href="#">Venta</a></li>
               <li><a href="#">Algo</a></li>
