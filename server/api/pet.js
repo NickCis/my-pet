@@ -17,7 +17,7 @@ export function post(req, res, next) {
   }else{
     const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ), '${req.params.birthdate}','${req.params.breed}')`;
   }
-  console.log(sql)
+
   const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
   req.db.doQuery(sql)
     .then(() => res.json(200, {success: true}))
