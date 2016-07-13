@@ -1,8 +1,9 @@
 import ApiError from '../error';
 
 export function post(req, res, next) {
+  next.ifError(req.hasSessionError());
   next.ifError(req.params.validationError({
-    required: ['name', 'owner','birthdate','breed'],
+    required: ['name','birthdate','breed'],
     properties: {
       name: {type: 'string'},
       owner: {type: 'integer'},
@@ -11,7 +12,12 @@ export function post(req, res, next) {
     }
   }));
 
-  // TODO: usar scape (mirar libreria de pg para eso)
+  if (!req.params.owner){
+    const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
+  }else{
+    const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ), '${req.params.birthdate}','${req.params.breed}')`;
+  }
+  console.log(sql)
   const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
   req.db.doQuery(sql)
     .then(() => res.json(200, {success: true}))
