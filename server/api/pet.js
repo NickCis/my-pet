@@ -11,19 +11,16 @@ export function post(req, res, next) {
       breed : {type:'string'}
     }
   }));
+  let sql
   if (req.params.owner){
-    const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
-    req.db.doQuery(sql)
-      .then(() => res.json(200, {success: true}))
-      .catch(err => res.json(500, {error: err}))
-      .then(() => next());
+    sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
   }else{
-    const sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ), '${req.params.birthdate}','${req.params.breed}')`;
-    req.db.doQuery(sql)
-      .then(() => res.json(200, {success: true}))
-      .catch(err => res.json(500, {error: err}))
-      .then(() => next());
+    sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ), '${req.params.birthdate}','${req.params.breed}')`;
   }
+  req.db.doQuery(sql)
+    .then(() => res.json(200, {success: true}))
+    .catch(err => res.json(500, {error: err}))
+    .then(() => next());
 }
 
 export function get(req, res, next) {
