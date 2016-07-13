@@ -27,7 +27,7 @@ export default class Panel extends Component {
     return (
       <div className={ this.containerClassName() }>
         { this.renderTitle() }
-        <div>
+        <div className="panel-body">
           { this.props.children }
         </div>
       </div>

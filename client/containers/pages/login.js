@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import LoadingButton from '../../components/loading_button';
+
 import { changePageIfNeeded } from '../../actions';
 import { doLoginIfNeeded } from '../../actions/login';
 
@@ -16,17 +18,6 @@ class Login extends Component {
           { loginError.description }
         </div>
       );
-  }
-
-  renderInnerButton() {
-    if(this.props.isFetching)
-      return (
-        <span>
-          <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />  Cargando...
-        </span>
-      );
-
-    return "Conectate";
   }
 
   getRegisterHandler() {
@@ -57,9 +48,7 @@ class Login extends Component {
         </div>
         { this.renderError() }
         <p className="help-block">Nuevo? <a href="#" onClick={ this.getRegisterHandler() }>Registrate</a></p>
-        <button className="btn btn-lg btn-primary btn-block" type="submit" disabled={ isFetching }>
-          { this.renderInnerButton() }
-        </button>
+        <LoadingButton isLoading={ isFetching } className="btn btn-lg btn-primary btn-block" type="submit" disabled={ isFetching }>Conectate</LoadingButton>
       </form>
     )
   }
