@@ -12,7 +12,7 @@
     "webpack": "webpack --progress --colors --config ./webpack.config.js",
     "webpack-watch": "webpack -w --progress --colors --config ./webpack.config.js",
     "webpack-dev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require babel-register test/*.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,6 @@
   "homepage": "https://github.com/nickcis/my-pet#readme",
   "dependencies": {
     "ajv": "^4.1.4",
-    "babel-preset-es2017": "^1.4.0",
     "config": "^1.21.0",
     "isomorphic-fetch": "^2.2.1",
     "js-yaml": "^3.6.1",
@@ -42,18 +41,24 @@
     "restify-router": "^0.2.1"
   },
   "devDependencies": {
+    "babel-preset-es2017": "^1.4.0",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "chai": "^3.5.0",
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.9.2",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
+    "hippie": "^0.5.0",
+    "mocha": "^2.5.3",
+    "mockery": "^1.7.0",
+    "nodemon": "^1.1.0",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "nodemon": "^1.1.0"
+    "webpack-dev-server": "^1.14.1"
   }
 }
