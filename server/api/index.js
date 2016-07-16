@@ -7,6 +7,7 @@ import * as product from './product';
 import * as pet from './pet';
 import * as candidate from './candidate';
 import * as match from './match';
+import * as pet_info from './pet_info';
 
 
 export default function (server, path) {
@@ -28,7 +29,8 @@ export default function (server, path) {
 
   router.get('/pet/:id/match', match.get);
 
-
+  //pet_information
+  router.get('/pet_info', pet_info.get);
 
   // e-commerce
   router.post('/product',product.post);

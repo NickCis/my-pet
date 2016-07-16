@@ -101,7 +101,7 @@ export function create(config) {
             id serial NOT NULL,
             breed varchar(40) NOT NULL,
             info text NOT NULL,
-            image bytea,
+            image_url varchar(255),
             PRIMARY KEY (id)
         )`,
   ].forEach(sql => {
