@@ -1,4 +1,5 @@
 import pg from 'pg';
+import ApiError from './error';
 
 /** Realiza una query.
  * @param client: connexion a la db
@@ -57,6 +58,10 @@ export function middleware(config, cb) {
     .catch(err => cb(err));
 
   return (req, res, next) => {
+    req.hasDBError = () => {
+      if(!db)
+        return new ApiError(500, 'No se puede conectar a la db');
+    };
     req.db = db;
     next();
   };

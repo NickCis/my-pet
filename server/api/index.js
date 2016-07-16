@@ -12,6 +12,7 @@ export default function (server, path) {
 
   router.get('/user', user.get);
   router.post('/user', user.post);
+  router.put('/user', user.put);
 
   // e-commerce
   router.post('/product',product.post);
