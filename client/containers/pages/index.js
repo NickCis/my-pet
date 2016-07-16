@@ -14,3 +14,6 @@ export { Register };
 
 import Profile from './profile';
 export { Profile };
+
+import Matching from './matching';
+export { Matching };
