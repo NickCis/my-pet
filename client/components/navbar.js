@@ -23,12 +23,12 @@ export default class Navbar extends Component {
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ username }<span className="caret" /></a>
               <ul className="dropdown-menu">
-              <li><a href="#" onClick={ this.getChangePageHandler('Profile') }>Perfil</a></li>
-              <li><a href="#">Mascotas</a></li>
-              <li><a href="#">Venta</a></li>
-              <li><a href="#" onClick={ this.getChangePageHandler('Matching') }>Matching</a></li>
+              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Profile') }>Perfil</a></li>
+              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#">Mascotas</a></li>
+              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#">Venta</a></li>
+              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Matching') }>Matching</a></li>
               <li role="separator" className="divider"></li>
-              <li><a href="#">Desconectarse</a></li>
+              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#">Desconectarse</a></li>
               </ul>
             </li>
           </ul>

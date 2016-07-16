@@ -8,9 +8,42 @@ export default class Match extends Component {
       <div>
         <div className="row">
           <Stack className='stack col-xs-12 col-sm-offset-4 col-sm-4'>
-            <li className='in-deck'><img src="https://placekitten.com/g/200/300" /></li>
-            <li className='in-deck'><img src="https://placekitten.com/g/200/300" /></li>
-            <li className='in-deck'><img src="https://placekitten.com/g/200/300" /></li>
+            <li className='in-deck'>
+              <div className="panel panel-default">
+                <div className="panel-body">
+                  <img src="https://placekitten.com/200/300" />
+                </div>
+                <div className="panel-footer">
+                  <p className="text-center">
+                    Lindo Gatito
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li className='in-deck'>
+              <div className="panel panel-default">
+                <div className="panel-body">
+                  <img src="https://placekitten.com/g/200/300" />
+                </div>
+                <div className="panel-footer">
+                  <p className="text-center">
+                    Otro gato
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li className='in-deck'>
+              <div className="panel panel-default">
+                <div className="panel-body">
+                  <img src="https://placekitten.com/200/300" />
+                </div>
+                <div className="panel-footer">
+                  <p className="text-center">
+                    M&aacute;s gatos
+                  </p>
+                </div>
+              </div>
+            </li>
           </Stack>
         </div>
         <div className="row">

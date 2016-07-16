@@ -53,16 +53,16 @@ ul.nav-profile {
 }
 
 .stack {
-    height: 300px;
+    height: 335px;
     position: relative;
 }
 
 .in-deck {
     box-sizing: border-box;
-    box-shadow: 0 0 2px rgba(0,0,0,.2), 1px 1px 1px rgba(0,0,0,.2);
+    /*box-shadow: 0 0 2px rgba(0,0,0,.2), 1px 1px 1px rgba(0,0,0,.2);
     background-color: yellow;
+    height: 300px;*/
     width: 200px;
-    height: 300px;
     list-style: none;
     position: absolute;
     top: 0;
@@ -71,7 +71,12 @@ ul.nav-profile {
     border-radius: 5px;
 }
 
+.in-deck p {
+    margin: 0;
+}
+
 .in-deck img {
+    border-radius: 5px;
     display: block;
     width: 100%;
     user-drag: none;
