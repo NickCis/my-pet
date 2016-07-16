@@ -88,6 +88,7 @@ export function create(config) {
             owner integer references users(id),
             birthdate date NOT NULL,
             breed varchar(40) NOT NULL,
+            image bytea,
             PRIMARY KEY (id)
         )`,
     `CREATE TABLE IF NOT EXISTS "likes" (
@@ -95,6 +96,13 @@ export function create(config) {
             pet2 integer references pets(id),
             result integer NOT NULL,
             PRIMARY KEY (pet1,pet2)
+        )`,
+    `CREATE TABLE IF NOT EXISTS "pet_information" (
+            id serial NOT NULL,
+            breed varchar(40) NOT NULL,
+            info text NOT NULL,
+            image bytea,
+            PRIMARY KEY (id)
         )`,
   ].forEach(sql => {
     promise = promise.then(result => {
