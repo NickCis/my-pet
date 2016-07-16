@@ -4,10 +4,12 @@ import { changePageIfNeeded } from './';
 
 export const NEW_PRODUCT = 'NEW_PRODUCT';
 
-function newProduct(username,productId) {
+function onNewProduct(productName, productType, productPrice, productDescription) {
   return {
-    type: REQUEST_LOGIN,
-	username,
-    productId
+    type: NEW_PRODUCT,
+	productName,
+	productType,
+	productPrice,
+	productDescription
   };
 }
