@@ -6,6 +6,8 @@ import * as like from './like';
 import * as product from './product';
 import * as pet from './pet';
 import * as candidate from './candidate';
+import * as match from './match';
+
 
 export default function (server, path) {
   const router = new Router();
@@ -22,6 +24,9 @@ export default function (server, path) {
   router.post('/like', like.post);
   router.get('/like', like.get);
   router.get('/pet/:id/candidate', candidate.get);
+
+  router.get('/pet/:id/match', match.get);
+
 
 
   // e-commerce
