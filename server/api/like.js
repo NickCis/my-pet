@@ -39,7 +39,7 @@ export function get(req, res, next) {
         };
         return res.json(200, papita);
       }
-      res.send(new ApiError(401, 'No hay like todavia'));
+      res.json(200,{});
 
     })
     .catch(err => res.send(new ApiError(500, err)))
