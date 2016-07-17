@@ -21,14 +21,11 @@
 export function post(request, response, next){
 	next.ifError(request.hasSessionError());
 	next.ifError(request.params.validationError({
-		// Tiene que devolver un id del producto
-		// TODO: validar token
-		// TODO: agregar fotos
 		required: ['name', 'description', 'price','type'],
 		properties: {
 			name: {type: 'string', minLength: 5},
 			description: {type: 'string', minLength: 10},
-			price: {type: 'integer', minimum: 0},
+			price: {type: 'number', minimum: 0},
 			type: {
 				"enum" : [ "product" , "service" , "professional-service"]
 			}
@@ -36,8 +33,9 @@ export function post(request, response, next){
 	}));
 
 
+	const nameLowerCase = request.params.name.toLowerCase();
 	const query = `INSERT into products (name, description, price, type) VALUES(
-		'${request.params.name}','${request.params.description}','${request.params.price}','${request.params.type}'
+		'${nameLowerCase}','${request.params.description}','${request.params.price}','${request.params.type}'
 	) RETURNING id as PRODUCT_ID`;
 	request.db.doQuery(query)
 	.then( queryResult => {
@@ -72,6 +70,7 @@ export function get(request, response, next){
 		}
 	}));
 
+	const requestedSearch = request.params.id.toLowerCase();
 	const query = `SELECT * FROM products where id = '${request.params.id}'`;
 
 	request.db.doQuery(query)
@@ -97,8 +96,8 @@ export function getWithName(request,response,next){
 		}
 	}));
 
-	const query = `SELECT * FROM products WHERE name ~ '${request.params.name}'`;
-	console.log(query);
+	const nameLowerCase = request.params.name.toLowerCase();
+	const query = `SELECT * FROM products WHERE name ~ '${nameLowerCase}'`;
 	request.db.doQuery(query)
 	.then(queryResult =>{
 		var returnValue = [];
@@ -109,4 +108,30 @@ export function getWithName(request,response,next){
 	})
     .catch(err => res.json(500, {error: err}))
     .then(() => next());
+}
+
+// Remueve el producto de la base de datos, para una venta por ejemplo
+export function deleteProduct(request, response, next){
+	next.ifError(request.params.validationError({
+		required : ['id'],
+		properties: {
+			product_id: {type : 'integer'}
+		}
+	}));
+
+	const query = `DELETE FROM products where id = '${request.params.id}' RETURNING id as PRODUCT_ID`;
+
+	console.log("SERVER QUERY :" ,query);
+	request.db.doQuery(query)
+	.then(queryResult => {
+		console.log("QUERY RESULT :::" ,queryResult);
+		if (queryResult.rows.length >0){
+			const product_id = queryResult.rows[0].product_id;
+			return response.json (200, {deleted: product_id});
+		}else{
+			return response.json (404, {status: "Not Found"});
+		}
+	})
+	.catch(err => res.send(new ApiError(500, err)))
+	.then( () => next());
 }
