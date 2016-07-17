@@ -60,3 +60,22 @@ export function getPets(req, res, next) {
     .catch(err => res.send(new ApiError(500, err)))
     .then(() => next());
 }
+
+export function getImg(req, res, next) {
+  const sql = `SELECT img FROM pets WHERE id = ${req.params.id}`;
+  req.db.doQuery(sql)
+    .then(result => {
+      var img = Buffer.from(result.rows[0].img, 'base64');
+      console.log(img);
+      res.writeHead(200, {
+        'Content-Type': 'image/jpeg',
+        'Content-Length': img.length
+      });
+      res.end(img);
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(new ApiError(500, "no hay imagen"));
+    })
+    .then(() => next());
+}
