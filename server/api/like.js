@@ -29,8 +29,7 @@ export function post(req, res, next) {
 }
 
 export function get(req, res, next) {
-  //TODO validar esta mierda
-  const sql = `SELECT result FROM likes WHERE pet1 = ${req.headers.pet1} AND pet2 = ${req.headers.pet2}`;
+  const sql = `SELECT result FROM likes WHERE pet1 = ${req.params.pet1} AND pet2 = ${req.params.pet2}`;
   req.db.doQuery(sql)
     .then(result => {
       if (result.rows.length > 0) {
