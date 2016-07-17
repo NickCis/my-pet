@@ -47,11 +47,22 @@ export function get(req, res, next) {
     .then(() => next());
 }
 
-export function getPets(req, res, next) {
+export function getPetsByUser(req, res, next) {
   next.ifError(req.params.validationError({
     required: ['owner']
   }));
   const sql = `SELECT * FROM pets WHERE owner = ${req.params.owner}`;
+  req.db.doQuery(sql)
+    .then(result => {
+        return res.json(200, result.rows);
+      })
+    .catch(err => res.send(new ApiError(500, err)))
+    .then(() => next());
+}
+
+export function getPets(req, res, next) {
+  next.ifError(req.hasSessionError());
+  const sql = `SELECT * FROM pets WHERE owner = (SELECT id FROM users WHERE username = '${req.session.username}' )`;
   req.db.doQuery(sql)
     .then(result => {
         return res.json(200, result.rows);

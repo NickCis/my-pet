@@ -20,7 +20,8 @@ export default function (server, path) {
 
   router.get('/pet', pet.get);
   router.post('/pet', pet.post);
-  router.get('/user/:owner/pets', pet.getPets);
+  router.get('/user/:owner/pets', pet.getPetsByUser);
+  router.get('/user/pets', pet.getPets);
 
   // matching
   router.post('/like', like.post);
