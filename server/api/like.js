@@ -29,12 +29,13 @@ export function post(req, res, next) {
 }
 
 export function get(req, res, next) {
-  const sql = `SELECT result FROM likes WHERE pet1 = ${req.params.pet1} AND pet2 = ${req.params.pet2}`;
+  const sql = `SELECT result, datetime FROM likes WHERE pet1 = ${req.params.pet1} AND pet2 = ${req.params.pet2}`;
   req.db.doQuery(sql)
     .then(result => {
       if (result.rows.length > 0) {
         const papita = {
-          result: result.rows[0].result
+          result: result.rows[0].result,
+          datetime : result.rows[0].timestamp
         };
         return res.json(200, papita);
       }

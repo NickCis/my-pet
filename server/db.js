@@ -95,6 +95,7 @@ export function create(config) {
             pet1 integer references pets(id),
             pet2 integer references pets(id),
             result integer NOT NULL,
+            datetime timestamp default current_timestamp,
             PRIMARY KEY (pet1,pet2)
         )`,
     `CREATE TABLE IF NOT EXISTS "pet_information" (
