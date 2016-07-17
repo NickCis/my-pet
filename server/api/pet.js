@@ -13,12 +13,16 @@ export function post(req, res, next) {
   }));
   let sql
   if (req.params.owner){
-    sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}','${req.params.breed}')`;
+    sql = `INSERT into pets (name,owner,birthdate,breed)
+          VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}',
+          '${req.params.breed}') RETURNING id`;
   }else{
-    sql = `INSERT into pets (name,owner,birthdate,breed) VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ), '${req.params.birthdate}','${req.params.breed}')`;
+    sql = `INSERT into pets (name,owner,birthdate,breed)
+            VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ),
+            '${req.params.birthdate}','${req.params.breed}') RETURNING id`;
   }
   req.db.doQuery(sql)
-    .then(() => res.json(200, {success: true}))
+    .then(insertResult => res.json(200, {success: true, id : insertResult.rows[0].id}))
     .catch(err => res.json(500, {error: err}))
     .then(() => next());
 }
