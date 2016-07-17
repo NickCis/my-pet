@@ -33,6 +33,7 @@ export default function (server, path) {
 
   //pet_information
   router.get('/pet_info', pet_info.get);
+  router.get('/pet_info/breeds', pet_info.getBreeds);
 
   // e-commerce
   router.post('/product',product.post);
