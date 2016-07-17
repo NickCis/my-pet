@@ -28,20 +28,10 @@ export function post(req, res, next) {
 }
 
 export function get(req, res, next) {
-  const sql = `SELECT * FROM pets WHERE id = ${req.headers.id}`;
+  const sql = `SELECT * FROM pets WHERE id = ${req.params.id}`;
   req.db.doQuery(sql)
     .then(result => {
-      if (result.rows.length > 0) {
-        const papita = {
-          id: result.rows[0].id,
-          name: result.rows[0].name,
-          birthdate: result.rows[0].birthdate,
-          breed: result.rows[0].breed
-        };
-        return res.json(200, papita);
-      }
-      res.send(new ApiError(401, 'No existe pet con ese id'));
-
+      return res.json(200, result.rows);
     })
     .catch(err => res.send(new ApiError(500, err)))
     .then(() => next());
