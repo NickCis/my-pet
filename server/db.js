@@ -92,7 +92,7 @@ export function create(config) {
           id serial NOT NULL,
           name varchar(40) NOT NULL,
           description varchar(1024) NOT NULL,
-		  price integer NOT NULL,
+		  price real NOT NULL,
 		  type varchar(30) NOT NULL,
           PRIMARY KEY (id)
       )`

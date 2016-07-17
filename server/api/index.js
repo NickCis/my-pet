@@ -17,6 +17,7 @@ export default function (server, path) {
   router.post('/product',product.post);
   router.get('/product/search',product.getWithName);
   router.get('/product/:id',product.get);
+  router.del('/product/:id',product.deleteProduct);
 
 
   router.applyRoutes(server, path);
