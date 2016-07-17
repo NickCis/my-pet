@@ -3,27 +3,31 @@ import ApiError from '../error';
 export function post(req, res, next) {
   next.ifError(req.hasSessionError());
   next.ifError(req.params.validationError({
-    required: ['name','birthdate','breed'],
+    required: ['name','birthdate','breed','image'],
     properties: {
       name: {type: 'string'},
       owner: {type: 'integer'},
       birthdate : {type: 'string'},
-      breed : {type:'string'}
+      breed : {type : 'string'},
+      image : {type : 'string'}
     }
   }));
   let sql
   if (req.params.owner){
-    sql = `INSERT into pets (name,owner,birthdate,breed)
+    sql = `INSERT into pets (name,owner,birthdate,breed,img)
           VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}',
-          '${req.params.breed}') RETURNING id`;
+          '${req.params.breed}', '${req.params.image}') RETURNING id`;
   }else{
-    sql = `INSERT into pets (name,owner,birthdate,breed)
+    sql = `INSERT into pets (name,owner,birthdate,breed,img)
             VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ),
-            '${req.params.birthdate}','${req.params.breed}') RETURNING id`;
+            '${req.params.birthdate}','${req.params.breed}' , '${req.params.image}') RETURNING id`;
   }
+  console.log(sql)
   req.db.doQuery(sql)
     .then(insertResult => res.json(200, {success: true, id : insertResult.rows[0].id}))
-    .catch(err => res.json(500, {error: err}))
+    .catch(err => {
+      res.send(new ApiError(500, err));
+    })
     .then(() => next());
 }
 
@@ -74,7 +78,6 @@ export function getImg(req, res, next) {
       res.end(img);
     })
     .catch(err => {
-      console.log(err);
       res.send(new ApiError(500, "no hay imagen"));
     })
     .then(() => next());
