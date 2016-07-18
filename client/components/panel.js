@@ -3,7 +3,8 @@ import React, { Component, PropTypes } from 'react'
 export default class Panel extends Component {
   static get propTypes() {
     return {
-      title: PropTypes.string
+      title: PropTypes.string,
+      loading: PropTypes.bool,
     };
   }
 
@@ -23,12 +24,23 @@ export default class Panel extends Component {
     return className;
   }
 
+  renderBody() {
+    if(!this.props.loading)
+      return this.props.children;
+
+    return (
+      <p style={{ width: '100%' }} className="text-center">
+        <span style={{ fontSize: '22px' }} className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />
+      </p>
+    );
+  }
+
   render() {
     return (
       <div className={ this.containerClassName() }>
         { this.renderTitle() }
         <div className="panel-body">
-          { this.props.children }
+          { this.renderBody() }
         </div>
       </div>
     );

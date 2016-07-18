@@ -6,7 +6,8 @@ import * as Swing from 'swing';
 export default class Stack extends Component {
   static get propTypes() {
     return {
-      className: PropTypes.string
+      className: PropTypes.string,
+      onThrowOut: PropTypes.func
     }
   }
 
@@ -24,16 +25,13 @@ export default class Stack extends Component {
     const stack = Swing.Stack();
 
     [].slice.call(ul.children).forEach(targetElement => {
-      console.log(targetElement);
       stack.createCard(targetElement);
     });
 
     stack.on('throwout', e => {
-      const direction = e.throwDirection == 1 ? 'right' : 'left';
-      console.log(`direction: ${direction}`);
-      console.log(e);
-      e.target.style.display = 'none';
-      e.target.style.visibility = 'hidden';
+      if(this.props.onThrowOut)
+        this.props.onThrowOut(e);
+      // const direction = e.throwDirection == 1 ? 'right' : 'left';
     });
   }
 
