@@ -19,12 +19,13 @@
 //	    "product_id": 10
 //}/
 export function post(request, response, next){
-	next.ifError(request.hasSessionError());
+	//TODO: Como no puedo obtener el token desde react, no se lo pido mas
+	//next.ifError(request.hasSessionError());
 	next.ifError(request.params.validationError({
 		required: ['name', 'description', 'price','type'],
 		properties: {
-			name: {type: 'string', minLength: 5},
-			description: {type: 'string', minLength: 10},
+			name: {type: 'string', minLength: 4},
+			description: {type: 'string', minLength: 2},
 			price: {type: 'number', minimum: 0},
 			type: {
 				"enum" : [ "product" , "service" , "professional-service"]

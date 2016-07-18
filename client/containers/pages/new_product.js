@@ -1,28 +1,30 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+	import React, { Component, PropTypes } from 'react'
+	import { connect } from 'react-redux'
 
-import { changePageIfNeeded } from '../../actions';
-import DropzoneComponent from 'react-dropzone-component/lib/react-dropzone';
-import { doNewProduct } from '../../actions/newProduct';
+	import { changePageIfNeeded } from '../../actions';
+	import DropzoneComponent from 'react-dropzone-component/lib/react-dropzone';
+	import { doNewProduct } from '../../actions/newProduct';
 
-class NewProduct extends Component{
-
-
-	renderInnerButton() {
-		if(this.props.isFetching)
-			return (
-				<span>
-					<span className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />  Cargando...
-				</span>
-			);
-
-		return "Publicar";
-	}
+	class NewProduct extends Component{
 
 
-	render(){
-		const onSubmit = ev => {
-			ev.preventDefault();
+		renderInnerButton() {
+			if(this.props.isFetching)
+				return (
+					<span>
+						<span className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />  Cargando...
+					</span>
+				);
+
+			return "Publicar";
+		}
+
+
+		render(){
+			console.log (this.state);
+
+			const onSubmit = ev => {
+				ev.preventDefault();
 			this.props.onNewProduct(
 				ev.target.productName.value,
 				ev.target.productType.value,
@@ -72,7 +74,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
 	//onNewProduct: (productName, productType, productPrice, productDescription) => dispatch( console.log(productName,productType,productPrice,productDescription)),
-	onNewProduct: (productName, productType, productPrice, productDescription) => dispatch(doNewProduct(productName, productType, productPrice, productDescription)),
+	onNewProduct: (productName, productType, productPrice, productDescription) => dispatch(doNewProduct(productName, productType, parseFloat(productPrice), productDescription)),
     onChangePage: page => dispatch(changePageIfNeeded(page))
   };
 };

@@ -6,7 +6,7 @@ export const NEW_PRODUCT = 'NEW_PRODUCT';
 
 
 
-export function doNewProduct(productName, productType, productPrice, productDescription) {
+export function doNewProduct(name, type, price, description) {
   return (dispatch, getState) => {
     return fetch('/api/product', {
       method: 'POST',
@@ -15,10 +15,10 @@ export function doNewProduct(productName, productType, productPrice, productDesc
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        productName,
-        productType,
-		productPrice,
-		productDescription
+		name,
+        type,
+		price:price,
+		description
       })
     })
       .then(response => response.json())
