@@ -16,17 +16,14 @@ export function get(req, res, next) {
                       AND breed = '${myrrope.breed}'
                       AND owner <> ${myrrope.owner}`;
 
-        req.db.doQuery(sql2)
-          .then(result => {
-            if (result.rows.length > 0){
-              return res.json(200, result.rows)
-            }
-            res.send(200, []);
-          })
-          .catch(err => res.send(new ApiError(500, err)))
-          .then(() => next());
-
+        return req.db.doQuery(sql2);
       }
+    })
+    .then(result => {
+      if (result.rows.length > 0){
+        return res.json(200, result.rows)
+      }
+      res.send(200, []);
     })
     .catch(err => res.send(new ApiError(500, err)))
 
