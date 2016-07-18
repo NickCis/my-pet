@@ -6,9 +6,15 @@ import Panel from '../../components/panel';
 import LoadingButton from '../../components/loading_button';
 
 import { changeProfileTab, updateProfile } from '../../actions/profile';
+import { getPetsIfNeeded } from '../../actions/pet';
 
+
+import { getPetPicture } from '../../utils';
 
 class Profile extends Component {
+  componentDidMount() {
+    this.props.getPets();
+  }
 
   getProfileFormSubmitHandler() {
     return ev => {
@@ -56,9 +62,41 @@ class Profile extends Component {
     );
   }
 
-  renderPetTab() {
+  renderPetRow(pet) {
     return (
-      <Panel title="Mascota">
+      <li className="media" key={ pet.id }>
+        <div className="media-left media-middle">
+          <a href="#">
+            <img style={{ maxHeight: '128px' }} className="media-object" src={ getPetPicture(pet) } alt={ "Foto de "+pet.name } />
+          </a>
+        </div>
+        <div className="media-body">
+          <h4 className="media-heading">{ pet.name }</h4>
+          <p>Esto seria texto</p>
+        </div>
+        <div className="media-right media-middle">
+          <div className="btn-group-vertical" role="group">
+            <button type="button" className="btn btn-default"><span className="glyphicon glyphicon-edit" /></button>
+            <button type="button" className="btn btn-danger"><span className="glyphicon glyphicon-remove" /></button>
+          </div>
+        </div>
+      </li>
+    );
+  }
+  renderPetTab() {
+    const { petsIsLoading, pets } = this.props;
+    // XXX: se podria extraer a un componente!
+    return (
+      <Panel title="Mascotas" loading={ petsIsLoading }>
+        <p>
+          Esta es una lista de todas las mascotas asociadas a tu cuenta.
+        </p>
+        <ul className="media-list profile-pet-media-list">
+          { pets.map(pet => this.renderPetRow(pet)) }
+        </ul>
+        <button type="button" className="btn btn-success pull-right">
+          <span className="glyphicon glyphicon-plus" />  Agregar
+        </button>
       </Panel>
     );
   }
@@ -93,6 +131,8 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
   return {
+    pets: state.pet.pets,
+    petsIsLoading: state.pet.isLoading,
     currentTab: state.profile.tab,
     profile: state.profile.profile
   };
@@ -100,6 +140,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getPets: () => dispatch(getPetsIfNeeded()),
     changeTab: tab => dispatch(changeProfileTab(tab)),
     updateProfile: data => dispatch(updateProfile(data))
   };

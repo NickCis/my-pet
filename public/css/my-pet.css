@@ -110,6 +110,24 @@ ul.nav-profile {
     color: red;
 }
 
+.profile-pet-media-list {
+    margin-bottom: 15px;
+}
+
+.profile-pet-media-list li:first-child {
+    border-top: 1px solid #ddd;
+}
+
+.profile-pet-media-list li {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    margin: 0 -15px;
+}
+
+.profile-pet-media-list img {
+    border-radius: 4px;
+}
+
 #logo {
     height: 100%;
 }
