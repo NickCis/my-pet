@@ -20,7 +20,7 @@
 //}/
 export function post(request, response, next){
 	//TODO: Como no puedo obtener el token desde react, no se lo pido mas
-	//next.ifError(request.hasSessionError());
+	next.ifError(request.hasSessionError());
 	next.ifError(request.params.validationError({
 		required: ['name', 'description', 'price','type'],
 		properties: {
