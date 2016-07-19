@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
@@ -23,6 +24,7 @@ class NewProduct extends Component{
 
 		const onSubmit = ev => {
 			ev.preventDefault();
+
 			this.props.onNewProduct(
 				ev.target.productName.value,
 				ev.target.productType.value,
@@ -39,7 +41,6 @@ class NewProduct extends Component{
 
 		const { isFetching } = this.props;
 
-
 		return (
 			<form className="form-newProduct" onSubmit= { onSubmit } >
 				<h2 className="form-newProduct-heading"> Publicar </h2>
@@ -54,6 +55,7 @@ class NewProduct extends Component{
 					<textarea id="productDescription" className="form-control" placeholder="Descripcion del Producto" required disabled={ isFetching } />
 					<DropzoneComponent config={componentConfig} />
 				</div>
+
 				<button className="btn btn-lg btn-primary btn-block" type="submit" disabled={ isFetching }>
 					{ this.renderInnerButton() }
 				</button>
@@ -77,6 +79,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(NewProduct)
-

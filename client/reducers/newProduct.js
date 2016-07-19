@@ -17,9 +17,9 @@ export default function(state={}, action) {
 			return {
 				isFetching: false,
 				error : action.error
-			}
-		default: 
-			return state;
+			};
 	}
+
+	return state;
 }
 

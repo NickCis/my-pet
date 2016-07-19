@@ -38,19 +38,18 @@ export function doNewProduct(name, type, price, description) {
       },
       body: JSON.stringify({
 		token: state.login.token,
-			name,
+		name,
         type,
 		price,
 		description
       })
     })
       .then(response => response.json())
+<<<<<<< HEAD
 	  .then(checkNewProduct())
       .then(product_id => dispatch(finishedProduct(product_id)))
-	  .then( () =>
+	  .then( () => {})
 		  // Mostrar algo diciendo sucess
-	   
-      .catch(error => dispatch(errorLogin(error)))
+      .catch(error => dispatch(errorLogin(error)));
   };
 }
-
