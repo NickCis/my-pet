@@ -64,7 +64,7 @@ class NewProduct extends Component{
 				</div>
 				<div className="form-group">
 					<label htmlFor="productType"> Tipo de publicaci&oacute;n</label>
-					<select id="productType" className="form-control">
+					<select id="productType" className="form-control" disabled={ isFetching }>
 						<option value="product">Producto</option>
 						<option value="service">Servicio</option>
 						<option value="professional-service">Servicio Profesional</option>
@@ -90,7 +90,7 @@ class NewProduct extends Component{
 							);
 						}) }
 					</div>
-					<Dropzone style={{
+					<Dropzone disabled={ isFetching } style={{
 						width: '100%',
 						height: '200px',
 						border: '2px dashed rgb(102, 102, 102)',
@@ -123,7 +123,8 @@ class NewProduct extends Component{
 const mapStateToProps = state => {
 	return {
 		isFetching: state.newProduct.isFetching,
-		finished: state.newProduct.finished
+		finished: state.newProduct.finished,
+		error: state.newProduct.error
 	};
 };
 

@@ -22,33 +22,48 @@ export function post(request, response, next){
 	//TODO: Como no puedo obtener el token desde react, no se lo pido mas
 	next.ifError(request.hasSessionError());
 	next.ifError(request.params.validationError({
-		required: ['name', 'description', 'price','type'],
+		required: ['name', 'description', 'price', 'type', 'images'],
 		properties: {
 			name: {type: 'string', minLength: 4},
 			description: {type: 'string', minLength: 2},
 			price: {type: 'number', minimum: 0},
 			type: {
 				"enum" : [ "product" , "service" , "professional-service"]
+			},
+			images: {
+				type: 'array',
+				minLength: 1
 			}
 		}
 	}));
 
-
 	const nameLowerCase = request.params.name.toLowerCase();
-	const query = `INSERT into products (name, description, price, type) VALUES(
-		'${nameLowerCase}','${request.params.description}','${request.params.price}','${request.params.type}'
+	const query = `INSERT into products (name, description, price, type, images_length) VALUES(
+		'${nameLowerCase}','${request.params.description}','${request.params.price}','${request.params.type}', ${request.params.images.length}
 	) RETURNING id as PRODUCT_ID`;
+
 	request.db.doQuery(query)
-	.then( queryResult => {
-		if (queryResult.rows.length > 0){
-			var returnValue = request.params; 
-			delete returnValue['validationError'];
+		.then( queryResult => {
+			if(queryResult.rows.length < 0)
+				return Promise.reject('Db Error');
+
 			const product_id = queryResult.rows[0].product_id;
-			returnValue["product_id"] = product_id;
-			return response.json(200,returnValue);
-		}
-	}).catch(err => response.send(new ApiError(500 , err)))
-	.then( () => next());
+
+			let returnValue = {
+				...request.params,
+				product_id
+			};
+
+			delete returnValue['validationError'];
+			response.json(200,returnValue);
+
+			/*return*/ Promise.all(request.params.images.map(img => {
+				const sql = `INSERT into product_images (id_product, image) VALUES (${product_id}, '${img}')`;
+				return request.db.doQuery(sql);
+			}))
+		})
+		.catch(err => response.send(new ApiError(500 , err)))
+		.then( () => next());
 }
 
 
@@ -84,6 +99,37 @@ export function get(request, response, next){
 	})
 	.catch(err => res.send(new ApiError(500, err)))
 	.then( () => next());
+}
+
+export function getProductImage(req, res, next) {
+	next.ifError(req.params.validationError({
+		required : ['id', 'i'],
+		properties: {
+			id: {},
+			i: {}
+		}
+	}));
+
+	const sql = `select * from product_images where id_product = ${req.params.id} order by id ASC LIMIT 1 OFFSET ${req.params.i}`;
+
+	return req.db.doQuery(sql)
+		.then(result => {
+			if(!result.rows.length)
+				return res.send(404, '');
+
+			const image = result.rows[0].image.replace(/^data:image\/(png|gif|jpe?g);base64,/,'');
+			const buffer = new Buffer(image, 'base64');
+
+			res.writeHead(200, {
+				'Content-Length': buffer.length,
+				'Content-Type': 'image/png'
+			});
+
+			res.write(buffer);
+			res.end();
+		})
+		.catch(err => res.send(new ApiError(500, err)))
+		.then(() => next());
 }
 
 // Busca todos los productos con los nombres que tengan substring el name pasado

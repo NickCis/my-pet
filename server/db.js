@@ -93,6 +93,13 @@ export function create(config) {
           description varchar(1024) NOT NULL,
           price real NOT NULL,
           type varchar(30) NOT NULL,
+          images_length integer NOT NULL,
+          PRIMARY KEY (id)
+      )`,
+    `CREATE TABLE IF NOT EXISTS "product_images" (
+          id serial NOT NULL,
+          id_product integer references products(id),
+          image text,
           PRIMARY KEY (id)
       )`,
     `CREATE TABLE IF NOT EXISTS "pets" (

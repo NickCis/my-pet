@@ -13,11 +13,16 @@ export function invalidateProduct(json){
 	};
 }
 
+function requestNewProduct() {
+	return {
+		type: NEW_PRODUCT
+	};
+}
 
 function checkNewProduct(json){
-  if(json.product_id)
-    return json.product_id;
-  return Promise.reject(json.error);
+	if(json.product_id)
+		return json.product_id;
+	return Promise.reject(json.error);
 }
 
 function errorProduct(error){
@@ -37,6 +42,7 @@ function finishedProduct(productId){
 //images es un array de images en base64 
 export function doNewProduct(name, type, price, description,images) {
 	return (dispatch, getState) => {
+		dispatch(requestNewProduct());
 		const state = getState();
 		return fetch('/api/product', {
 			method: 'POST',
