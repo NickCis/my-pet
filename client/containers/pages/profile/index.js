@@ -1,15 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import Nav from '../../components/profile/nav';
-import Panel from '../../components/panel';
-import LoadingButton from '../../components/loading_button';
+import Nav from '../../../components/profile/nav';
+import Panel from '../../../components/panel';
+import LoadingButton from '../../../components/loading_button';
 
-import { changeProfileTab, updateProfile } from '../../actions/profile';
+import PetTab from './pet_tab';
 
+import { changeProfileTab, updateProfile } from '../../../actions/profile';
 
 class Profile extends Component {
-
   getProfileFormSubmitHandler() {
     return ev => {
       ev.preventDefault();
@@ -56,20 +56,15 @@ class Profile extends Component {
     );
   }
 
-  renderPetTab() {
-    return (
-      <Panel title="Mascota">
-      </Panel>
-    );
-  }
-
   renderCurrentTab() {
     switch(this.props.currentTab) {
       case 'profile':
         return this.renderProfileTab();
 
       case 'pet':
-        return this.renderPetTab();
+        return (
+          <PetTab />
+        );
     }
 
     return (

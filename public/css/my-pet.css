@@ -52,6 +52,73 @@ ul.nav-profile {
     margin: -15px;
 }
 
+.stack {
+    height: 335px;
+    position: relative;
+}
+
+.in-deck {
+    box-sizing: border-box;
+    /*box-shadow: 0 0 2px rgba(0,0,0,.2), 1px 1px 1px rgba(0,0,0,.2);
+    background-color: yellow;
+    height: 300px;*/
+    width: 200px;
+    list-style: none;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -100px;
+    border-radius: 5px;
+}
+
+.in-deck p {
+    margin: 0;
+}
+
+.in-deck img {
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.in-deck .panel-body {
+    height: 270px;
+}
+
+.matching-button {
+    display: block;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    width: 55px;
+    height: 55px;
+    text-align: center;
+    line-height: 55px;
+    border: 5px solid #eee;
+    font-size: 25px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.matching-button .glyphicon-ok {
+    color: green;
+}
+
+.matching-button .glyphicon-remove {
+    color: red;
+}
+
+.profile-pet-media-object {
+    border-radius: 4px;
+    max-height: 128px;
+}
+
 #logo {
     height: 100%;
 }
