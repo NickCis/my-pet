@@ -6,6 +6,7 @@ import user from './user';
 import profile from './profile';
 import pet from './pet';
 import candidate from './candidate';
+import pet_info from './pet_info';
 
 const rootReducer = combineReducers({
   login,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   user,
   profile,
   pet,
-  candidate
+  candidate,
+  pet_info
 });
 
 export default rootReducer

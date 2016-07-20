@@ -93,7 +93,13 @@ export function create(config) {
             owner integer references users(id),
             birthdate date NOT NULL,
             breed varchar(40) NOT NULL,
-            img text,
+            images_length integer NOT NULL,
+            PRIMARY KEY (id)
+        )`,
+    `CREATE TABLE IF NOT EXISTS "pet_images" (
+            id serial NOT NULL,
+            id_pet integer references pets(id),
+            image text,
             PRIMARY KEY (id)
         )`,
     `CREATE TABLE IF NOT EXISTS "likes" (

@@ -1,9 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 
 export default class Panel extends Component {
+  static get defaultProps() {
+    return {
+      wrapInBody: true
+    };
+  }
+
   static get propTypes() {
     return {
       title: PropTypes.string,
+      wrapInBody: PropTypes.bool,
       loading: PropTypes.bool,
     };
   }
@@ -25,23 +32,30 @@ export default class Panel extends Component {
   }
 
   renderBody() {
-    if(!this.props.loading)
-      return this.props.children;
+    if(this.props.loading)
+      return (
+        <div className="panel-body">
+          <p style={{ width: '100%' }} className="text-center">
+            <span style={{ fontSize: '22px' }} className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />
+          </p>
+        </div>
+      );
 
-    return (
-      <p style={{ width: '100%' }} className="text-center">
-        <span style={{ fontSize: '22px' }} className="glyphicon glyphicon-refresh glyphicon-refresh-animate" />
-      </p>
-    );
+    if(this.props.wrapInBody)
+      return (
+        <div className="panel-body">
+          { this.props.children }
+        </div>
+      );
+
+    return this.props.children;
   }
 
   render() {
     return (
       <div className={ this.containerClassName() }>
         { this.renderTitle() }
-        <div className="panel-body">
-          { this.renderBody() }
-        </div>
+        { this.renderBody() }
       </div>
     );
   }

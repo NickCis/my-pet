@@ -3,31 +3,50 @@ import ApiError from '../error';
 export function post(req, res, next) {
   next.ifError(req.hasSessionError());
   next.ifError(req.params.validationError({
-    required: ['name','birthdate','breed','image'],
+    required: [ 'name', 'birthdate', 'breed', 'images' ],
     properties: {
-      name: {type: 'string'},
-      owner: {type: 'integer'},
-      birthdate : {type: 'string'},
-      breed : {type : 'string'},
-      image : {type : 'string'}
+      name: { type: 'string' },
+      owner: { type: 'integer' },
+      birthdate : {type: 'string' },
+      breed : { type : 'string' },
+      images : {
+        type : 'array',
+        minItems: 1,
+        items: { type: 'string' }
+      }
     }
   }));
-  let sql
-  if (req.params.owner){
-    sql = `INSERT into pets (name,owner,birthdate,breed,img)
-          VALUES ('${req.params.name}', '${req.params.owner}', '${req.params.birthdate}',
-          '${req.params.breed}', '${req.params.image}') RETURNING id`;
-  }else{
-    sql = `INSERT into pets (name,owner,birthdate,breed,img)
-            VALUES ('${req.params.name}', (SELECT id FROM users WHERE username = '${req.session.username}' ),
-            '${req.params.birthdate}','${req.params.breed}' , '${req.params.image}') RETURNING id`;
-  }
-  console.log(sql)
+
+  const sql = `INSERT into pets (name, owner, birthdate, breed, images_length) VALUES (
+    '${req.params.name}',
+    (SELECT id FROM users WHERE username = '${req.session.username}' ),
+    '${req.params.birthdate}',
+    '${req.params.breed}',
+    ${req.params.images.length}
+  ) RETURNING id`;
+
   req.db.doQuery(sql)
-    .then(insertResult => res.json(200, {success: true, id : insertResult.rows[0].id}))
-    .catch(err => {
-      res.send(new ApiError(500, err));
+    .then(result => {
+      if(result.rows.length < 1)
+        return Promise.reject('Db Error');
+
+      const id = result.rows[0].id;
+      let returnValue = {
+        ...req.params,
+        id
+      };
+
+      delete returnValue['validationError'];
+      delete returnValue['images'];
+
+      res.json(200, returnValue);
+
+      return Promise.all(req.params.images.map(img => {
+        const sql = `INSERT into pet_images (id_pet, image) VALUES (${id}, '${img}')`;
+        return req.db.doQuery(sql);
+      }));
     })
+    .catch(err => res.send(new ApiError(500, err)))
     .then(() => next());
 }
 
@@ -66,19 +85,23 @@ export function getPets(req, res, next) {
 }
 
 export function getImg(req, res, next) {
-  const sql = `SELECT img FROM pets WHERE id = ${req.params.id}`;
+  const sql = `SELECT image FROM pet_images WHERE id_pet = ${req.params.id} order by id ASC LIMIT 1 OFFSET ${req.params.i}`;
   req.db.doQuery(sql)
     .then(result => {
-      var img = Buffer.from(result.rows[0].img, 'base64');
-      console.log(img);
+      if(!result.rows.length)
+        return res.send(404, '');
+
+      const image = result.rows[0].image.replace(/^data:image\/(png|gif|jpe?g);base64,/,'');
+      const buffer = new Buffer(image, 'base64');
+
       res.writeHead(200, {
-        'Content-Type': 'image/jpeg',
-        'Content-Length': img.length
+        'Content-Length': buffer.length,
+        'Content-Type': 'image/png'
       });
-      res.end(img);
+
+      res.write(buffer);
+      res.end();
     })
-    .catch(err => {
-      res.send(new ApiError(500, "no hay imagen"));
-    })
+    .catch(err => res.send(new ApiError(500, "no hay imagen")))
     .then(() => next());
 }

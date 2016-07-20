@@ -12,12 +12,7 @@ export function getBreeds(req, res, next) {
   const sql = `SELECT breed FROM pet_information`;
   req.db.doQuery(sql)
     .then(result => {
-      var arr = [];
-      console.log(result)
-      for (var i = 0; i < result.rowCount; i++){
-        arr.push(result.rows[i].breed);
-      }
-      res.send(200, arr);
+      res.json(200, result.rows.map(info => info.breed));
     })
     .catch(err => res.json(500, {error: err}))
     .then(() => next());
