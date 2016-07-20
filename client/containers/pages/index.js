@@ -17,3 +17,6 @@ export { Profile };
 
 import Matching from './matching';
 export { Matching };
+
+import Match from './match';
+export { Match };

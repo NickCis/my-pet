@@ -28,6 +28,7 @@ export default class Navbar extends Component {
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Profile/pet') }>Mascotas</a></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#">Venta</a></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Matching') }>Matching</a></li>
+              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Match') }>Notificaciones </a></li>
               <li role="separator" className="divider"></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.props.onLogout }>Desconectarse</a></li>
               </ul>
