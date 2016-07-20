@@ -5,7 +5,11 @@ import {
   CREATE_NEW_PET,
   FINISHED_NEW_PET,
   ERROR_NEW_PET,
-  INVALIDATE_NEW_PET
+  INVALIDATE_NEW_PET,
+  REQUEST_DEL_PET,
+  FINISHED_DEL_PET,
+  ERROR_DEL_PET,
+  INVALIDATE_DEL_PET
 } from '../actions/pet';
 
 import { completePet } from '../utils';
@@ -18,9 +22,18 @@ const createDefaultState = () => {
   };
 }
 
+const delDefaultState = () => {
+  return {
+    isLoading: false,
+    error: undefined,
+    success: undefined
+  };
+}
+
 export default (state={
   pets: [],
-  create: createDefaultState()
+  create: createDefaultState(),
+  del: delDefaultState()
 }, action) => {
   switch(action.type) {
     case REQUEST_GET_PETS:
@@ -72,6 +85,31 @@ export default (state={
       return {
         ...state,
         create: createDefaultState()
+      };
+
+    case REQUEST_DEL_PET:
+      return {
+        ...state,
+        del: { isLoading: true }
+      };
+
+    case FINISHED_DEL_PET:
+      return {
+        ...state,
+        pets: state.pets.filter(p => p.id != action.id),
+        del: { success: true }
+      };
+
+    case ERROR_DEL_PET:
+      return {
+        ...state,
+        del: { error: action.error }
+      };
+
+    case INVALIDATE_DEL_PET:
+      return {
+        ...state,
+        del: delDefaultState()
       };
   }
 

@@ -10,10 +10,12 @@ import {
   getPetsIfNeeded,
   createNewPet,
   errorNewPet,
-  invalidateNewPet
+  invalidateNewPet,
+  delPet,
+  invalidateDelPet
 } from '../../../actions/pet';
 import { getBreedsIfNeeded } from '../../../actions/pet_info';
-import { getPetPicture } from '../../../utils';
+import { getPetPicture, niceDate } from '../../../utils';
 
 class PetTab extends Component {
   constructor(props) {
@@ -31,6 +33,13 @@ class PetTab extends Component {
     this.props.getBreeds();
   }
 
+  getDelPetHandler(id) {
+    return ev => {
+      ev.preventDefault();
+      this.props.delPet(id);
+    };
+  }
+
   renderPetRow(pet) {
     return (
       <li className="list-group-item" key={ pet.id }>
@@ -42,12 +51,15 @@ class PetTab extends Component {
           </div>
           <div className="media-body">
             <h4 className="media-heading">{ pet.name }</h4>
-            <p>Esto seria texto</p>
+            <ul>
+              <li><strong>Raza</strong>: { pet.breed }</li>
+              <li><strong>Fecha de nacimiento</strong>: { niceDate(pet.birthdate) }</li>
+            </ul>
           </div>
           <div className="media-right media-middle">
             <div className="btn-group-vertical" role="group">
               <button type="button" className="btn btn-default"><span className="glyphicon glyphicon-edit" /></button>
-              <button type="button" className="btn btn-danger"><span className="glyphicon glyphicon-remove" /></button>
+              <button type="button" className="btn btn-danger" onClick={ this.getDelPetHandler(pet.id) }><span className="glyphicon glyphicon-remove" /></button>
             </div>
           </div>
         </div>
@@ -58,6 +70,9 @@ class PetTab extends Component {
   changeMode(mode) {
     if(mode == 'add')
       this.props.invalidateNewPet();
+
+    if(this.props.del.success)
+      this.props.invalidateDelPet();
 
     this.setState({
       ...this.state,
@@ -73,10 +88,12 @@ class PetTab extends Component {
   }
 
   renderList() {
-    const { petsIsLoading, pets } = this.props;
+    const { petsIsLoading, pets, del } = this.props;
+
+    const isLoading = petsIsLoading || del.isLoading;
 
     return (
-      <Panel title="Mascotas" loading={ petsIsLoading } wrapInBody={ false }>
+      <Panel title="Mascotas" loading={ isLoading } wrapInBody={ false }>
         <div className="panel-body">
           { this.renderResult() }
           <p>
@@ -148,9 +165,25 @@ class PetTab extends Component {
   }
 
   renderResult() {
-    const { success } = this.props.create;
+    const { create, del } = this.props;
 
-    if(success)
+    if(del.error)
+      return (
+        <div className="alert alert-danger" role="alert">
+          <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true" />
+          <span className="sr-only">Error:</span>
+            { del.error.description }
+        </div>
+      );
+
+    if(del.success)
+      return (
+        <div className="alert alert-success" role="alert">
+          <span className="glyphicon glyphicon-ok"/>  Mascota borrada correctamente
+        </div>
+      );
+
+    if(create.success)
       return (
         <div className="alert alert-success" role="alert">
           <span className="glyphicon glyphicon-ok"/>  Mascota creada correctamente
@@ -210,7 +243,8 @@ const mapStateToProps = state => {
     breed: state.pet_info.breed,
     pets: state.pet.pets,
     create: state.pet.create,
-    petsIsLoading: state.pet.isLoading
+    petsIsLoading: state.pet.isLoading,
+    del: state.pet.del
   };
 };
 
@@ -220,7 +254,9 @@ const mapDispatchToProps = dispatch => {
     getBreeds: () => dispatch(getBreedsIfNeeded()),
     createNewPet: pet => dispatch(createNewPet(pet)),
     errorNewPet: err => dispatch(errorNewPet(err)),
-    invalidateNewPet: () => dispatch(invalidateNewPet())
+    invalidateNewPet: () => dispatch(invalidateNewPet()),
+    delPet: id => dispatch(delPet(id)),
+    invalidateDelPet: () => dispatch(invalidateDelPet()),
   };
 };
 

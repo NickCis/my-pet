@@ -1,6 +1,7 @@
 import ApiError from '../error';
 
 export function post(req, res, next) {
+  next.ifError(req.hasDBError());
   next.ifError(req.hasSessionError());
   next.ifError(req.params.validationError({
     required: [ 'name', 'birthdate', 'breed', 'images' ],
@@ -51,6 +52,7 @@ export function post(req, res, next) {
 }
 
 export function get(req, res, next) {
+  next.ifError(req.hasDBError());
   const sql = `SELECT * FROM pets WHERE id = ${req.params.id}`;
   req.db.doQuery(sql)
     .then(result => {
@@ -61,6 +63,7 @@ export function get(req, res, next) {
 }
 
 export function getPetsByUser(req, res, next) {
+  next.ifError(req.hasDBError());
   next.ifError(req.params.validationError({
     required: ['owner']
   }));
@@ -74,6 +77,7 @@ export function getPetsByUser(req, res, next) {
 }
 
 export function getPets(req, res, next) {
+  next.ifError(req.hasDBError());
   next.ifError(req.hasSessionError());
   const sql = `SELECT * FROM pets WHERE owner = (SELECT id FROM users WHERE username = '${req.session.username}' )`;
   req.db.doQuery(sql)
@@ -85,6 +89,7 @@ export function getPets(req, res, next) {
 }
 
 export function getImg(req, res, next) {
+  next.ifError(req.hasDBError());
   const sql = `SELECT image FROM pet_images WHERE id_pet = ${req.params.id} order by id ASC LIMIT 1 OFFSET ${req.params.i}`;
   req.db.doQuery(sql)
     .then(result => {
@@ -104,4 +109,27 @@ export function getImg(req, res, next) {
     })
     .catch(err => res.send(new ApiError(500, "no hay imagen")))
     .then(() => next());
+}
+
+export function del(req, res, next) {
+  next.ifError(req.hasDBError());
+  next.ifError(req.hasSessionError());
+  next.ifError(req.params.validationError({
+    required: ['id'],
+    properties: {
+      id: { type: ['string', 'integer'] }
+    }
+  }));
+
+  const sql = `DELETE from pets where id = ${req.params.id} and owner in (
+      SELECT id from users where username = '${req.session.username}'
+    )`;
+
+  req.db.doQuery(sql)
+    .then(result => {
+      res.json(200, { success: true });
+    })
+    .catch(err => res.send(new ApiError(500, "Error base de datos")))
+    .then(() => next());
+
 }

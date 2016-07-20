@@ -4,6 +4,11 @@ export const REQUEST_GET_PETS = 'REQUEST_GET_PET';
 export const FINISHED_GET_PETS = 'FINISHED_GET_PET';
 export const ERROR_GET_PETS = 'ERROR_GET_PET';
 
+export const REQUEST_DEL_PET = 'REQUEST_DEL_PET';
+export const FINISHED_DEL_PET = 'FINISHED_DEL_PET';
+export const ERROR_DEL_PET = 'ERROR_DEL_PET';
+export const INVALIDATE_DEL_PET = 'INVALIDATE_DEL_PET';
+
 export const CREATE_NEW_PET = 'CREATE_NEW_PETS';
 export const FINISHED_NEW_PET = 'FINISHED_NEW_PET';
 export const ERROR_NEW_PET = 'ERROR_NEW_PET';
@@ -97,4 +102,54 @@ export function createNewPet(pet) {
       .catch(err => dispatch(errorNewPet(err)));
   };
 }
+
+function requestDelPet(id) {
+  return {
+    type: REQUEST_DEL_PET
+  };
+}
+
+function finishedDelPet(id) {
+  return {
+    type: FINISHED_DEL_PET,
+    id
+  };
+}
+
+function errorDelPet(error) {
+  return {
+    type: ERROR_DEL_PET,
+    error
+  };
+}
+
+export function invalidateDelPet() {
+  return {
+    type: INVALIDATE_DEL_PET
+  };
+}
+
+export function delPet(id) {
+  return (dispatch, getState) => {
+    const state = getState();
+    if(state.pet.del.isLoading)
+      return;
+
+    dispatch(requestDelPet(id));
+    return fetch(`/api/pet/${id}?token=${state.login.token}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        if(json.error)
+          return Promise.reject(json.error);
+      })
+      .then(() => dispatch(finishedDelPet(id)))
+      .catch(err => dispatch(errorDelPet(err)));
+  }
+};
 

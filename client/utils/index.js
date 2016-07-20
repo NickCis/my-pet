@@ -11,3 +11,8 @@ export function getPetPicture(pet, i) {
     i = 0;
   return pet.images[i] || `/api/pet/${pet.id}/img/${i}`;
 }
+
+export function niceDate(d) {
+  const date = new Date(d);
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+}

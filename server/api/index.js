@@ -22,6 +22,7 @@ export default function (server, path) {
   router.get('/pet', pet.get);
   router.post('/pet', pet.post);
   router.get('/pet/:id/img/:i', pet.getImg);
+  router.del('/pet/:id', pet.del);
   router.get('/user/:owner/pets', pet.getPetsByUser);
   router.get('/user/pets', pet.getPets);
 
