@@ -23,8 +23,6 @@ class Matching extends Component {
       getCandidate(pet || pets[0].id);
   }
 
-
-
   componentWillReceiveProps(nextProps) {
     const { pet, pets, getCandidate } = nextProps;
 

@@ -1,5 +1,4 @@
-// XXX: integrar con backend
-//import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch';
 
 export const REQUEST_GET_CANDIDATES = 'REQUEST_GET_CANDIDATES';
 export const FINISHED_GET_CANDIDATES = 'FINISHED_GET_CANDIDATES';

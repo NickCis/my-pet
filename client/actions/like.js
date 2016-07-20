@@ -1,4 +1,3 @@
-// XXX: integrar con backend
 import fetch from 'isomorphic-fetch';
 
 export function likePet(idFrom, idTo, result) {
