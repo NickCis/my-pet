@@ -1,16 +1,19 @@
 import ApiError from '../error';
 
 export function post(req, res, next) {
+  next.ifError(req.hasDBError());
+  next.ifError(req.hasSessionError());
+
   next.ifError(req.params.validationError({
     required: ['pet1', 'pet2', 'result'],
     properties: {
       pet1: {type: 'integer'},
       pet2: {type: 'integer'},
-      result:{type:'integer'}
+      result: { type: ['integer', 'boolean'] }
     }
   }));
 
-  const sql = `INSERT into likes (pet1,pet2, result) VALUES ('${req.params.pet1}', '${req.params.pet2}', '${req.params.result}')`;
+  const sql = `INSERT into likes (pet1, pet2, result) VALUES ('${req.params.pet1}', '${req.params.pet2}', '${req.params.result ? 1 : 0}')`;
   req.db.doQuery(sql)
     .then(result => {
       if (req.params.result != 1){ res.json(200, {success : true , match : false});}
@@ -29,6 +32,9 @@ export function post(req, res, next) {
 }
 
 export function get(req, res, next) {
+  next.ifError(req.hasDBError());
+  next.ifError(req.hasSessionError());
+
   const sql = `SELECT result, datetime FROM likes WHERE pet1 = ${req.params.pet1} AND pet2 = ${req.params.pet2}`;
   req.db.doQuery(sql)
     .then(result => {

@@ -76,7 +76,9 @@ class PetTab extends Component {
 
     this.setState({
       ...this.state,
-      mode
+      mode,
+      images: [],
+      datePickerValue: undefined
     });
   }
 

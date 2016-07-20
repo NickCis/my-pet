@@ -87,6 +87,10 @@ ul.nav-profile {
     -ms-user-select: none;
 }
 
+.in-deck .panel-body {
+    height: 270px;
+}
+
 .matching-button {
     display: block;
     cursor: pointer;

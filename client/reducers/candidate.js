@@ -6,6 +6,8 @@ import {
   REMOVE_CANDIDATE
 } from '../actions/candidate';
 
+import { completePet } from '../utils';
+
 export default function candidate(
     state={
       pet: 0,
@@ -28,7 +30,7 @@ export default function candidate(
         return {
           ...state,
           isLoading: false,
-          candidates: action.candidates
+          candidates: action.candidates.map(c => completePet(c))
         };
 
     case ERROR_GET_CANDIDATES:

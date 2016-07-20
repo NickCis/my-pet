@@ -7,17 +7,6 @@ export const ERROR_GET_CANDIDATES = 'ERROR_GET_CANDIDATES';
 export const INVALIDATE_GET_CANDIDATES = 'INVALIDATE_GET_CANDIDATES';
 export const REMOVE_CANDIDATE = 'REMOVE_CANDIDATE';
 
-function fetch(path, conf) {
-  return new Promise((rs, rj) => {
-    setTimeout(() => rs({
-      json: () => [
-        { id: 1, name: 'Pepita', owner: 1, birthdate: '2000/1/1', breed: 'Boxer' },
-        { id: 2, name: 'Mascotita', owner: 1, birthdate: '2000/1/1', breed: 'Boxer' }
-      ]
-    }), 200);
-  });
-}
-
 function requestGetCandidates(id) {
   return {
     type: REQUEST_GET_CANDIDATES,
@@ -66,7 +55,7 @@ export function getCandidatesIfNeeded(id) {
     if(shouldGetCandidates(state, id)){
       dispatch(requestGetCandidates(id));
 
-      return fetch(`/api/${id}/candidate?token=${state.login.token}`)
+      return fetch(`/api/pet/${id}/candidate?token=${state.login.token}`)
         .then(response => response.json())
         .then(json => dispatch(finishedGetCandidates(id, json)))
         .catch(error => errorGetCandidates(error));

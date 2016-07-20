@@ -23,11 +23,13 @@ class Matching extends Component {
       getCandidate(pet || pets[0].id);
   }
 
+
+
   componentWillReceiveProps(nextProps) {
     const { pet, pets, getCandidate } = nextProps;
 
     // XXX:
-    if(pets.length)
+    if(this.props.pets.length == 0 && pets.length)
       getCandidate(pet || pets[0].id);
   }
 
@@ -52,16 +54,39 @@ class Matching extends Component {
 
       this.props.likePet(idFrom, idTo, e.result);
       this.props.removeCandidate(idFrom, idTo);
+
+      if(this.props.candidates.length <= 1)
+        this.props.getCandidate(idFrom);
     };
   }
 
-  renderMatching() {
+  renderMatchingContent() {
     const { candidates } = this.props;
+    if(candidates.length <= 0)
+      return (
+        <div>
+          <p className="text-center">
+            <span className="glyphicon glyphicon-heart" style={{color: 'red', fontSize: '40px'}}/>
+          </p>
+          <p className="text-center">
+            Lamentablemente no hay m&aacute;s candidatos. Intenta m&aacute;s tarde.
+          </p>
+        </div>
+      );
+
     return (
-      <Panel title="Matching" loading={ !candidates.length }>
-        <Match onLike={ this.getLikeHandler() }>
-          { candidates.map(candidate => this.renderMatchingItem(candidate)) }
-        </Match>
+      <Match onLike={ this.getLikeHandler() }>
+        { candidates.map(candidate => this.renderMatchingItem(candidate)) }
+      </Match>
+    );
+
+  }
+
+  renderMatching() {
+    const isLoading = this.props.petsIsLoading || this.props.candidatesIsLoading;
+    return (
+      <Panel title="Matching" loading={ isLoading }>
+        { this.renderMatchingContent() }
       </Panel>
     );
   }
@@ -104,6 +129,7 @@ const mapStateToProps = state => {
   return {
     pets: state.pet.pets,
     petsIsLoading: state.pet.isLoading,
+    candidatesIsLoading: state.candidate.isLoading,
     pet: state.candidate.pet,
     candidates: state.candidate.candidates
   };
