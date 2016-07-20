@@ -9,7 +9,7 @@ export function get(req, res, next) {
 }
 
 export function getBreeds(req, res, next) {
-  const sql = `SELECT breed FROM pet_information`;
+  const sql = `SELECT distinct(breed) FROM pet_information`;
   req.db.doQuery(sql)
     .then(result => {
       res.json(200, result.rows.map(info => info.breed));

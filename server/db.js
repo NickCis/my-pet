@@ -90,7 +90,7 @@ export function create(config) {
     `CREATE TABLE IF NOT EXISTS "pets" (
             id serial NOT NULL,
             name varchar(40) NOT NULL,
-            owner integer references users(id),
+            owner integer references users(id) ON DELETE CASCADE,
             birthdate date NOT NULL,
             breed varchar(40) NOT NULL,
             images_length integer NOT NULL,
@@ -98,13 +98,13 @@ export function create(config) {
         )`,
     `CREATE TABLE IF NOT EXISTS "pet_images" (
             id serial NOT NULL,
-            id_pet integer references pets(id),
+            id_pet integer references pets(id) ON DELETE CASCADE,
             image text,
             PRIMARY KEY (id)
         )`,
     `CREATE TABLE IF NOT EXISTS "likes" (
-            pet1 integer references pets(id),
-            pet2 integer references pets(id),
+            pet1 integer references pets(id) ON DELETE CASCADE,
+            pet2 integer references pets(id) ON DELETE CASCADE,
             result integer NOT NULL,
             datetime timestamp default current_timestamp,
             PRIMARY KEY (pet1,pet2)
