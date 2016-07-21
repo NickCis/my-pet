@@ -76,6 +76,15 @@ export function invalidateNewPet(pet) {
 
 export function createNewPet(pet) {
   return (dispatch, getState) => {
+    if(!pet.birthdate)
+      return dispatch(errorNewPet({description: "Se debe completar la fecha de nacimiento"}));
+
+    if(pet.images.length < 1)
+        return dispatch(errorNewPet({description: "Se deben agregar imagenes"}));
+
+    if(pet.breed <= 0)
+        return dispatch(errorNewPet({description: "Se debe seleccionar una raza"}));
+
     const state = getState();
     if(state.pet.create.isLoading)
       return;

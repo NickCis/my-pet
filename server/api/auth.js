@@ -3,8 +3,16 @@ import ApiError from '../error';
 
 export function post(req, res, next) {
   next.ifError(req.hasDBError());
-  // TODO: usar scape (mirar libreria de pg para eso)
-  const sql = `SELECT * from users where username = '${req.params.username}' AND password = '${req.params.password}'`;
+  next.ifError(req.params.validationError({
+    required: ['username', 'password'],
+    properties: {
+      username: {type: 'string'},
+      password: {type: 'string'}
+    }
+  });
+
+  const username = req.params.username.toLowerCase();
+  const sql = `SELECT * from users where username = '${username}' AND password = '${req.params.password}'`;
 
   req.db.doQuery(sql)
     .then(result => {

@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
+import { getPetsIfNeeded } from './pet';
+
 export const REQUEST_GET_CANDIDATES = 'REQUEST_GET_CANDIDATES';
 export const FINISHED_GET_CANDIDATES = 'FINISHED_GET_CANDIDATES';
 export const ERROR_GET_CANDIDATES = 'ERROR_GET_CANDIDATES';
@@ -37,6 +39,7 @@ export function removeCandidate(idPet, idCandidate) {
 }
 
 function shouldGetCandidates(state, idPet) {
+  console.log(`idPet ${idPet}`);
   if(idPet == state.candidate.pet){
     if(state.candidate.candidates.length || state.candidate.isLoading)
       return false;
@@ -59,6 +62,17 @@ export function getCandidatesIfNeeded(id) {
         .then(json => dispatch(finishedGetCandidates(id, json)))
         .catch(error => errorGetCandidates(error));
     }
+  };
+}
+
+export function getPetsAndDefaultCandidate() {
+  return (dispatch, getState) => {
+    return (getPetsIfNeeded()(dispatch, getState) || Promise.resolve())
+      .then(() => {
+        const state = getState();
+        if(state.pet.pets.length)
+          return getCandidatesIfNeeded(state.pet.pets[0].id)(dispatch, getState)
+      });
   };
 }
 

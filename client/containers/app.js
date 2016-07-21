@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { changePageIfNeeded } from '../actions';
+import { logout } from '../actions/login';
 
 import Navbar from '../components/navbar';
 
@@ -9,10 +10,10 @@ import * as Pages from './pages';
 
 class App extends Component {
   render() {
-    const { currentPage, username, onChangePage } = this.props;
+    const { currentPage, username, onChangePage, onLogout } = this.props;
     return (
       <div>
-        <Navbar onChangePage={ onChangePage } username={ username }/>
+        <Navbar onChangePage={ onChangePage } username={ username } onLogout={ onLogout }/>
         <div className='container'>
           { currentPage }
         </div>
@@ -36,7 +37,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChangePage: page => dispatch(changePageIfNeeded(page))
+    onChangePage: page => dispatch(changePageIfNeeded(page)),
+    onLogout: () => dispatch(logout())
   };
 };
 

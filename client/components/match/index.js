@@ -21,6 +21,34 @@ export default class Match extends Component {
     };
   }
 
+  getDragMoveHandler() {
+    return ev => {
+      let showEle = '.glyphicon-ok',
+        hideEle = '.glyphicon-remove';
+
+      if(ev.throwDirection <= -1){
+        showEle = '.glyphicon-remove';
+        hideEle = '.glyphicon-ok';
+      }
+
+      const show = ev.target.querySelector(showEle);
+      show.classList.remove('hidden', 'invisible');
+      show.style.opacity = ev.throwOutConfidence;
+
+      ev.target.querySelector(hideEle)
+        .classList.add('hidden', 'invisible');
+    };
+  };
+
+  getDragEndHandler() {
+    return ev => {
+      ['.glyphicon-ok', '.glyphicon-remove'].forEach(e => {
+        ev.target.querySelector(e)
+          .classList.add('hidden', 'invisible');
+      });
+    }
+  };
+
   getThrowOutHandler() {
     return e => {
       if(this.props.onLike)
@@ -33,7 +61,7 @@ export default class Match extends Component {
     return (
       <div className={ className }>
         <div className="row">
-          <Stack className='stack col-xs-12 col-sm-offset-4 col-sm-4' onThrowOut={ this.getThrowOutHandler() }>
+          <Stack className='stack col-xs-12 col-sm-offset-4 col-sm-4' onThrowOut={ this.getThrowOutHandler() } onDragMove={ this.getDragMoveHandler() } onDragEnd={ this.getDragEndHandler() }>
             { children }
           </Stack>
         </div>

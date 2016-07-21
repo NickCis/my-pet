@@ -7,7 +7,9 @@ export default class Stack extends Component {
   static get propTypes() {
     return {
       className: PropTypes.string,
-      onThrowOut: PropTypes.func
+      onThrowOut: PropTypes.func,
+      onDragMove: PropTypes.func,
+      onDragEnd: PropTypes.func
     }
   }
 
@@ -32,6 +34,14 @@ export default class Stack extends Component {
       if(this.props.onThrowOut)
         this.props.onThrowOut(e);
       // const direction = e.throwDirection == 1 ? 'right' : 'left';
+    });
+    stack.on('dragmove', e => {
+      if(this.props.onDragMove)
+        this.props.onDragMove(e);
+    });
+    stack.on('dragend', e => {
+      if(this.props.onDragEnd)
+        this.props.onDragEnd(e);
     });
   }
 

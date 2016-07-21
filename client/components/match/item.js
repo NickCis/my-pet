@@ -11,7 +11,7 @@ export default class Item extends Component {
   render() {
     const { img, name } = this.props;
     return (
-      <li className='in-deck' data-id={ this.props['data-id'] } >
+      <li className='in-deck' data-id={ this.props['data-id'] } style={{position: 'relative' }}>
          <div className="panel panel-default">
            <div className="panel-body">
              <img src={ img } />
@@ -20,6 +20,8 @@ export default class Item extends Component {
              <p className="text-center">{ name }</p>
            </div>
          </div>
+         <span className="glyphicon glyphicon-ok hidden invisible" style={{ fontSize: '64px', color: 'green', position: 'absolute', top: '50%', left: '50%', margin: '-32px 0 0 -32px' }}/>
+         <span className="glyphicon glyphicon-remove hidden invisible" style={{ fontSize: '64px', color: 'red', position: 'absolute', top: '50%', left: '50%', margin: '-32px 0 0 -32px'}}/>
       </li>
     );
   }

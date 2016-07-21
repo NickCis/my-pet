@@ -13,8 +13,8 @@ export function post(req, res, next) {
     }
   }));
 
-  // TODO: usar scape (mirar libreria de pg para eso)
-  const sql = `INSERT into users (username, password) VALUES ('${req.params.username}', '${req.params.password}')`;
+  const username = req.params.username.toLowerCase();
+  const sql = `INSERT into users (username, password) VALUES ('${username}', '${req.params.password}')`;
   req.db.doQuery(sql)
     .then(() => res.json(200, {success: true}))
     .catch(err => res.json(500, {error: err}))
