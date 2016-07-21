@@ -203,6 +203,14 @@ ul.nav-profile {
     vertical-align: middle;
 }
 
+@media (min-width: 768px) {
+ .carousel-caption p {
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 1.4;
+  }
+}
+
 .marketing .col-lg-4 {
     margin-bottom: 20px;
     text-align: center;

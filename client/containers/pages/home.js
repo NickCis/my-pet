@@ -1,44 +1,71 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { changePageIfNeeded } from '../../actions';
+
 import Carousel from '../../components/carousel';
 import CarouselItem from '../../components/carousel/item'
 import Marketing from '../../components/marketing';
 import MarketingItem from '../../components/marketing/item';
 
+function getData() {
+  const data = [
+    { name: 'Papita', img: '/img/breed/basset_hound.jpg', text: 'Le gustan las siestas y comer mucho' },
+    { name: 'Pelos', img: '/img/breed/beagle.jpg', text: 'No estariamos seguros si es un chanchito!' },
+    { name: 'Lilita', img: '/img/breed/boxer.jpg', text: 'Simpatico, confianzudo y alegre' },
+    { name: 'Cacho', img: '/img/breed/britanico_de_pelo_corto.jpg', text: 'Timido, pero bueno' },
+    { name: 'Juan', img: '/img/breed/caniche.jpg', text: 'Ladra, ladra y ladra, pero no muerde!' },
+    { name: 'Marta', img: '/img/breed/himalayo.jpg', text: 'Muy activo, nunca para de hacer cosas!' },
+    { name: 'Rayo Silver', img: '/img/breed/san_bernardo.jpg', text: 'Divertido y alegre!' },
+  ];
+
+  const rand = Math.round((Math.random() * data.length)) % data.length;
+  return data[rand];
+}
+
 class Home extends Component {
+  getChangePageHandler(page) {
+    return ev => {
+      ev.preventDefault();
+      this.props.onChangePage(page);
+    };
+  }
   renderCarousel() {
     return (
       <Carousel>
         <CarouselItem className="active">
-          <h1>Example headline.</h1>
-          <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
-          <p><a className="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+          <p><span style={{ fontSize: '64px', color: 'red' }}className="glyphicon glyphicon-fire" /></p>
+          <h1>Matching</h1>
+          <p>¿Tu mascota se siente sola? ¿La compa&ntilde;ia humana no le alcanza?  ¡Ellos tambien tienen necesidades, encontrale una pareja!</p>
+          <p><a className="btn btn-lg btn-primary" href="#" role="button" onClick={ this.getChangePageHandler('Register') }>Registrate hoy!</a></p>
         </CarouselItem>
         <CarouselItem>
-          <h1>Another example headline.</h1>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-          <p><a className="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+          <p><span style={{ fontSize: '64px', color: 'yellow' }}className="glyphicon glyphicon-gift" /></p>
+          <h1>Compras</h1>
+          <p>Ellos siempre piensan en nosotros, ¿Por que nosotros nunca pensamos en ellos?. Sumate al <code>#RegaloXMovidaDeCola</code></p>
+          <p><a className="btn btn-lg btn-primary" href="#" role="button" onClick={ this.getChangePageHandler('Register') }>Registrate hoy!</a></p>
         </CarouselItem>
         <CarouselItem>
-          <h1>One more for good measure.</h1>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-          <p><a className="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+          <p><span style={{ fontSize: '64px'}}className="glyphicon glyphicon-info-sign" /></p>
+          <h1>Informate</h1>
+          <p>Darle el cuidado necesario es algo dificil, manetene informado y al d&iacute;!</p>
+          <p><a className="btn btn-lg btn-primary" href="#" role="button" onClick={ this.getChangePageHandler('Register') }>Registrate hoy!</a></p>
         </CarouselItem>
       </Carousel>
     );
   }
   renderMarketing() {
+    const [ pet1, pet2, pet3 ] = [ getData(), getData(), getData() ];
     return (
       <Marketing>
-        <MarketingItem title="Titulo">
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+        <MarketingItem title={ pet1.name } img={ pet1.img }>
+          <p>{ pet1.text }</p>
         </MarketingItem>
-        <MarketingItem title="Titulo">
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+        <MarketingItem title={ pet2.name } img={ pet2.img }>
+          <p>{ pet2.text }</p>
         </MarketingItem>
-        <MarketingItem title="Titulo">
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+        <MarketingItem title={ pet3.name } img={ pet3.img }>
+          <p>{ pet3.text }</p>
         </MarketingItem>
       </Marketing>
     );
@@ -61,6 +88,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onChangePage: page => dispatch(changePageIfNeeded(page))
   };
 };
 
