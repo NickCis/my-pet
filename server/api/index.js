@@ -29,6 +29,7 @@ export default function (server, path) {
   // matching
   router.post('/like', like.post);
   router.get('/like', like.get);
+  router.del('/like', like.del);
   router.get('/pet/:id/candidate', candidate.get);
 
   router.get('/pet/:id/match', match.get);

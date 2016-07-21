@@ -5,19 +5,33 @@ import Panel from '../../components/panel';
 import PetList from '../../components/pet_list';
 
 import { getPetsAndDefaultMatch, getMatch } from '../../actions/match';
+import { delLike, invalidateDelLike } from '../../actions/like';
 
 import { getPetPicture } from '../../utils';
 
 class Match extends Component {
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getMatches();
+  }
+
+  componentWillUnmount() {
+    this.props.invalidateDelLike();
   }
 
   getPetListClickHandler() {
     return (e, pet) => {
       e.preventDefault();
+      this.props.invalidateDelLike();
       this.props.getMatch(pet.id);
+    };
+  }
+
+  getDelLikeHandler(to) {
+    const from = this.props.currentPet;
+    return ev => {
+      ev.preventDefault();
+      this.props.delLike(from, to);
     };
   }
 
@@ -42,7 +56,7 @@ class Match extends Component {
           </div>
           <div className="media-right media-middle">
             <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-danger"><span className="glyphicon glyphicon-remove" /></button>
+              <button type="button" className="btn btn-danger" onClick={ this.getDelLikeHandler(pet.id) }><span className="glyphicon glyphicon-remove"/></button>
             </div>
           </div>
         </div>
@@ -67,6 +81,26 @@ class Match extends Component {
     );
   }
 
+  renderResult() {
+    const { del } = this.props;
+
+    if(del.error)
+      return (
+        <div className="alert alert-danger" role="alert">
+          <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true" />
+          <span className="sr-only">Error:</span>
+            { del.error.description }
+        </div>
+      );
+
+    if(del.success)
+      return (
+        <div className="alert alert-success" role="alert">
+          <span className="glyphicon glyphicon-ok"/>  Like borrado correctamente
+        </div>
+      );
+  }
+
   render() {
     const { pet, matchIsFetching, currentPet } = this.props,
       isLoading = pet.isLoading || matchIsFetching;
@@ -84,6 +118,7 @@ class Match extends Component {
         <div className="col-xs-12 col-sm-9">
           <Panel title="Matches" loading={ isLoading } wrapInBody={ false }>
             <div className="panel-body">
+              { this.renderResult() }
               <p>
                 Esta es una lista de todas los matches que tuvo su mascota.
               </p>
@@ -103,14 +138,17 @@ const mapStateToProps = state => {
     pet: state.pet,
     currentPet: state.match.pet,
     matches: state.match.matches,
-    matchIsFetching : state.match.isFetching
+    matchIsFetching: state.match.isFetching,
+    del: state.like.del
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     getMatches: () => dispatch(getPetsAndDefaultMatch()),
-    getMatch: id => dispatch(getMatch(id))
+    getMatch: id => dispatch(getMatch(id)),
+    delLike: (from, to) => dispatch(delLike(from, to)),
+    invalidateDelLike: () => dispatch(invalidateDelLike())
   }
 }
 

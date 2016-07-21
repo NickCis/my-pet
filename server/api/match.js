@@ -6,9 +6,11 @@ function max_date(date1, date2){
 }
 
 export function get(req, res, next) {
+  next.ifError(req.hasDBError());
+  next.ifError(req.hasSessionError());
   next.ifError(req.params.validationError({
     required: ['id']
-    }));
+  }));
 
   const sql = `SELECT papita.id, papita.name,papita.owner,papita.birthdate, papita.breed,
               owner.id as owner_id, owner.username as owner_username, owner.name as owner_name,

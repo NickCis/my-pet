@@ -1,7 +1,8 @@
 import {
   REQUEST_MATCH,
   FINISHED_MATCH,
-  ERROR_MATCH
+  ERROR_MATCH,
+  REMOVE_MATCH
 } from '../actions/match';
 
 import { completePet } from '../utils';
@@ -27,6 +28,12 @@ export default function(state={
         isFetching: false,
         finished: true,
         matches: action.matches.map(completePet)
+      };
+
+    case REMOVE_MATCH:
+      return{
+        ...state,
+        matches: state.matches.filter(m => m.id != action.id)
       };
 
     case ERROR_MATCH:

@@ -4,6 +4,7 @@ import { getPetsIfNeeded } from './pet';
 export const REQUEST_MATCH = 'REQUEST_MATCH';
 export const FINISHED_MATCH = 'FINISHED_MATCH';
 export const ERROR_MATCH = 'ERROR_MATCH';
+export const REMOVE_MATCH = 'REMOVE_MATCH';
 
 function requestMatch(id){
   return{
@@ -26,10 +27,18 @@ function finishedMatch(matches){
   };
 }
 
+export function removeMatch(id) {
+  return {
+    type: REMOVE_MATCH,
+    id
+  };
+}
+
 export function getMatch(id){
   return (dispatch, getState) => {
+    const state = getState();
     dispatch(requestMatch(id));
-    return fetch(`/api/pet/${id}/match`)
+    return fetch(`/api/pet/${id}/match?token=${state.login.token}`)
       .then(response => response.json())
       .then(json => finishedMatch(json))
       .catch(error => errorMatch(error))
