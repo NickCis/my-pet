@@ -4,9 +4,13 @@ import { connect } from 'react-redux'
 import LoadingButton from '../../components/loading_button';
 
 import { changePageIfNeeded } from '../../actions';
-import { doLoginIfNeeded } from '../../actions/login';
+import { doLoginIfNeeded, invalidateLogin } from '../../actions/login';
 
 class Login extends Component {
+  componentWillUnmount() {
+    this.props.invalidateLogin()
+  }
+
   renderError() {
     const { loginError } = this.props;
 
@@ -64,7 +68,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLogin: (username, password) => dispatch(doLoginIfNeeded(username, password)),
-    onChangePage: page => dispatch(changePageIfNeeded(page))
+    onChangePage: page => dispatch(changePageIfNeeded(page)),
+    invalidateLogin: () => dispatch(invalidateLogin())
   };
 };
 

@@ -2,9 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import { changePageIfNeeded } from '../../actions';
-import { doRegisterIfNeeded } from '../../actions/register';
+import { doRegisterIfNeeded, invalidateRegister } from '../../actions/register';
 
 class Register extends Component {
+  componentWillUnmount() {
+    this.props.invalidateRegister()
+  }
+
   renderError() {
     const { registerError } = this.props;
 
@@ -50,7 +54,15 @@ class Register extends Component {
   render() {
     const onSubmit = ev => {
       ev.preventDefault();
-      this.props.onRegister(ev.target.registerUsername.value, ev.target.registerPassword.value);
+      const { registerUsername, registerPassword, registerName, registerSurname, registerEmail, registerTel } = ev.target;
+      this.props.onRegister({
+        username: registerUsername.value,
+        password: registerPassword.value,
+        name: registerName.value,
+        surname: registerSurname.value,
+        email: registerEmail.value,
+        tel: registerTel.value
+      });
     };
 
     const { isFetching, success } = this.props;
@@ -64,13 +76,29 @@ class Register extends Component {
         { this.renderError() }
         <div className="form-group">
           <label htmlFor="registerUsername">Usuario</label>
-          <input type="text" id="registerUsername" className="form-control" placeholder="Nombre de Usuario" required autoFocus disabled={ isFetching } />
+          <input type="text" id="registerUsername" className="form-control" placeholder="Nombre de Usuario" required autoFocus disabled={ isFetching } required />
           <p className="help-block">M&aacute;s de 6 car&aacute;cteres</p>
         </div>
         <div className="form-group">
           <label htmlFor="registerPassword">Contrase&ntilde;a</label>
-          <input type="password" id="registerPassword" className="form-control" placeholder="Password" required disabled={ isFetching } />
+          <input type="password" id="registerPassword" className="form-control" placeholder="Password" required disabled={ isFetching } required pattern=".{5,}" title="Minimo 5 caracteres" />
           <p className="help-block">M&aacute;s de 6 car&aacute;cteres</p>
+        </div>
+        <div className="form-group">
+          <label htmlFor="registerName">Nombre</label>
+          <input type="text" id="registerName" className="form-control" placeholder="Nombre" required disabled={ isFetching } required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="registerSurname">Apellido</label>
+          <input type="text" id="registerSurname" className="form-control" placeholder="Apellido" required disabled={ isFetching } required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="registerEmail">E-Mail</label>
+          <input type="email" id="registerEmail" className="form-control" placeholder="Email" required disabled={ isFetching } required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="registerTel">Tel&eacute;fono</label>
+          <input type="text" id="registerTel" className="form-control" placeholder="Tel&eacute;fono" required disabled={ isFetching } required />
         </div>
         <button className="btn btn-lg btn-primary btn-block" type="submit" disabled={ isFetching }>
           { this.renderInnerButton() }
@@ -91,7 +119,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onRegister: (username, password) => dispatch(doRegisterIfNeeded(username, password)),
-    onChangePage: page => dispatch(changePageIfNeeded(page))
+    onChangePage: page => dispatch(changePageIfNeeded(page)),
+    invalidateRegister: () => dispatch(invalidateRegister())
   };
 };
 

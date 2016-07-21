@@ -35,6 +35,9 @@ class Match extends Component {
             <ul>
               <li><strong>Raza</strong>: { pet.breed }</li>
               <li><strong>Fecha de nacimiento</strong>: { pet.niceBirthdate }</li>
+              <li><strong>Due&ntilde;o</strong>: { `${pet.owner.name} ${pet.owner.surname} (${pet.owner.username})` }</li>
+              <li><strong>E-Mail</strong>: { pet.owner.email }</li>
+              <li><strong>Tel:</strong>: { pet.owner.tel }</li>
             </ul>
           </div>
           <div className="media-right media-middle">

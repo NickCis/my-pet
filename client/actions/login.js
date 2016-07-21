@@ -5,6 +5,7 @@ import { changePageIfNeeded } from './';
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const FINISHED_LOGIN = 'FINISHED_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
+export const INVALIDATE_LOGIN = 'INVALIDATE_LOGIN';
 export const LOGOUT = 'LOGOUT';
 
 export function logout() {
@@ -35,6 +36,13 @@ function finishedLogin(token) {
     type: FINISHED_LOGIN,
     persistLogin: true,
     token: token
+  };
+}
+
+export function invalidateLogin() {
+  return {
+    type: INVALIDATE_LOGIN,
+    persistLogin: true
   };
 }
 
