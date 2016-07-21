@@ -95,8 +95,15 @@ export function create(config) {
           id serial NOT NULL,
           name varchar(40) NOT NULL,
           description varchar(1024) NOT NULL,
-		  price integer NOT NULL,
-		  type varchar(30) NOT NULL,
+          price real NOT NULL,
+          type varchar(30) NOT NULL,
+          images_length integer NOT NULL,
+          PRIMARY KEY (id)
+      )`,
+    `CREATE TABLE IF NOT EXISTS "product_images" (
+          id serial NOT NULL,
+          id_product integer references products(id) ON DELETE CASCADE,
+          image text,
           PRIMARY KEY (id)
       )`,
     `CREATE TABLE IF NOT EXISTS "pets" (
@@ -149,7 +156,6 @@ export function create(config) {
         INSERT INTO pet_information ( breed, info, image_url) VALUES ('Basset Hound','El rostro solemne de este adorable sabueso contradice su naturaleza vivaz. Confiable compañero de caza, es también una mascota deliciosa para las familias con niños pequeños. \nLa mayoría de las razas basset son originarias de Francia (bas significa "abajo" en francés), pero el basset hound fue desarrollado en gran Bretaña hace apenas cien años. Por su habilidad para concentrarse en un olor en particular se ha ganado el respeto de los cazadores. \nTiene patas cortas y macizas, con pliegues sueltos de piel. El cuerpo es robusto y con forma de barril. El color del pelo puede ser una combinación de blanco con tostado, negro y limón. Las orejas largas son aterciopeladas. \nTiene buen carácter y es amable con los niños. Puede ser obcecado y es difícil de entrenar para la convivencia básica. \nAcicalado: \nNo pierde mucho pelo y es suave y corto. Cepíllelo con cepillo de cerdas duras y báñelo con shampoo seco sólo cuando haga falta. Es importante limpiarle las orejas semanalmente.',
         '/img/breed/basset_hound.jpg');
         `,
-
   ].forEach(sql => {
     promise = promise.then(result => {
       return result.client.doQuery(sql);

@@ -20,3 +20,9 @@ export { Matching };
 
 import Match from './match';
 export { Match };
+
+import NewProduct from './new_product';
+export { NewProduct };
+
+import ProductsList from './products_list';
+export { ProductsList };

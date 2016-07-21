@@ -9,7 +9,8 @@ import candidate from './candidate';
 import pet_info from './pet_info';
 import match from './match';
 import like from './like';
-
+import newProduct from './newProduct';
+import productsList from './productsList';
 import { LOGOUT } from '../actions/login';
 
 const appReducer = combineReducers({
@@ -22,6 +23,8 @@ const appReducer = combineReducers({
   pet_info,
   match,
   like
+  newProduct,
+  productsList
 });
 
 const rootReducer = (state, action) => {

@@ -40,8 +40,10 @@ export default function (server, path) {
 
   // e-commerce
   router.post('/product',product.post);
-  router.get('/product',product.get);
-  router.get('/product/search',product.get);
+  router.get('/product/search',product.getWithName);
+  router.get('/product/:id',product.get);
+  router.del('/product/:id',product.deleteProduct);
+  router.get('/product/:id/image/:i',product.getProductImage);
 
 
   router.applyRoutes(server, path);
