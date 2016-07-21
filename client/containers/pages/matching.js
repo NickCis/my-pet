@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { getPetsIfNeeded } from '../../actions/pet';
-import { getCandidatesIfNeeded, invalidateGetCandidates, removeCandidate } from '../../actions/candidate';
+import {
+  getPetsAndDefaultCandidate,
+  getCandidatesIfNeeded,
+  invalidateGetCandidates,
+  removeCandidate
+} from '../../actions/candidate';
+
 import { likePet } from '../../actions/like';
 
 import Panel from '../../components/panel';
@@ -15,20 +20,7 @@ import { getPetPicture } from '../../utils';
 
 class Matching extends Component {
   componentDidMount() {
-    this.props.getPets();
-
-    // XXX:
-    const { pet, pets, getCandidate } = this.props;
-    if(pets.length)
-      getCandidate(pet || pets[0].id);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { pet, pets, getCandidate } = nextProps;
-
-    // XXX:
-    if(this.props.pets.length == 0 && pets.length)
-      getCandidate(pet || pets[0].id);
+    this.props.getPetsAndDefaultCandidates();
   }
 
   componentWillUnmount() {
@@ -47,7 +39,7 @@ class Matching extends Component {
       if(!lastCandidate)
         return;
 
-      const idTo = lastCandidate.id,
+      const idTo = e.id || lastCandidate.id,
         idFrom = this.props.pet;
 
       this.props.likePet(idFrom, idTo, e.result);
@@ -89,10 +81,10 @@ class Matching extends Component {
     );
   }
 
-  getSelectPetHandler(pet) {
+  getSelectPetHandler(petId) {
     return e => {
       e.preventDefault();
-      this.props.getCandidate(pet);
+      this.props.getCandidate(petId);
     };
   }
 
@@ -103,15 +95,30 @@ class Matching extends Component {
     );
   }
 
+  renderPetList() {
+    const { pets } = this.props;
+    if(pets.length)
+      return pets.map(pet => this.renderPet(pet));
+
+    return (
+        <li role="presentation" style={{ color: 'grey' }}>
+          <p className="text-center" style={{ margin: '10px 0 0' }}>
+            <span className="glyphicon glyphicon-option-horizontal" />
+          </p>
+          <p className="text-center">No tenes mascotas</p>
+        </li>
+    );
+  }
+
   render() {
-    const { pets, petsIsLoading } = this.props;
+    const { petsIsLoading } = this.props;
 
     return (
       <div className="row">
         <div className="col-xs-12 col-sm-3">
           <Panel title="Mascotas" loading={ petsIsLoading }>
             <ul className="nav nav-pills nav-stacked nav-profile">
-              { pets.map(pet => this.renderPet(pet)) }
+              { this.renderPetList() }
             </ul>
           </Panel>
         </div>
@@ -135,7 +142,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getPets: () => dispatch(getPetsIfNeeded()),
+    getPetsAndDefaultCandidates: () => dispatch(getPetsAndDefaultCandidate()),
     getCandidate: id => dispatch(getCandidatesIfNeeded(id)),
     invalidateGetCandidates: () => dispatch(invalidateGetCandidates()),
     removeCandidate: (idPet, idCandidate) => dispatch(removeCandidate(idPet, idCandidate)),

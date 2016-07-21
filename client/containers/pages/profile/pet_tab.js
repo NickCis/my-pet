@@ -33,6 +33,11 @@ class PetTab extends Component {
     this.props.getBreeds();
   }
 
+  componentWillUnmount() {
+    this.props.invalidateNewPet();
+    this.props.invalidateDelPet();
+  }
+
   getDelPetHandler(id) {
     return ev => {
       ev.preventDefault();
@@ -89,8 +94,25 @@ class PetTab extends Component {
     }
   }
 
+  renderListContent() {
+    const { pets } = this.props;
+    if(pets.length)
+      return pets.map(pet => this.renderPetRow(pet));
+
+    return (
+      <li className="list-group-item">
+        <p className="text-center">
+          <span className="glyphicon glyphicon-heart-empty" style={{color: 'red', fontSize: '32px'}}/>
+        </p>
+        <p className="text-center">
+          Agrega a tus seres m&aacute;s queridos
+        </p>
+      </li>
+    );
+  }
+
   renderList() {
-    const { petsIsLoading, pets, del } = this.props;
+    const { petsIsLoading, del } = this.props;
 
     const isLoading = petsIsLoading || del.isLoading;
 
@@ -103,7 +125,7 @@ class PetTab extends Component {
           </p>
         </div>
         <ul className="list-group">
-          { pets.map(pet => this.renderPetRow(pet)) }
+          { this.renderListContent() }
         </ul>
         <div className="panel-body">
           <button onClick={ this.getChangeModeHandler('add') } type="button" className="btn btn-success pull-right">
@@ -139,11 +161,6 @@ class PetTab extends Component {
     return ev => {
       ev.preventDefault();
       const { petName, petBirthdate, petBreed } = ev.target;
-      if(!petBirthdate.value)
-        return this.props.errorNewPet({description: "Se debe completar la fecha de nacimiento"})
-
-      if(this.state.images.length < 1)
-        return this.props.errorNewPet({description: "Se deben agregar imagenes"})
 
       this.props.createNewPet({
         name: petName.value,

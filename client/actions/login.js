@@ -5,10 +5,19 @@ import { changePageIfNeeded } from './';
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const FINISHED_LOGIN = 'FINISHED_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
+export const LOGOUT = 'LOGOUT';
+
+export function logout() {
+  return {
+    type: LOGOUT,
+    persistLogin: true
+  };
+}
 
 function requestLogin(username) {
   return {
     type: REQUEST_LOGIN,
+    persistLogin: true,
     username
   };
 }
@@ -16,6 +25,7 @@ function requestLogin(username) {
 function errorLogin(error) {
   return {
     type: ERROR_LOGIN,
+    persistLogin: true,
     error: error
   };
 }
@@ -23,6 +33,7 @@ function errorLogin(error) {
 function finishedLogin(token) {
   return {
     type: FINISHED_LOGIN,
+    persistLogin: true,
     token: token
   };
 }

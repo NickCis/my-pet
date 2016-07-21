@@ -79,6 +79,7 @@ ul.nav-profile {
     border-radius: 5px;
     display: block;
     width: 100%;
+    max-height: 240px;
     user-drag: none;
     user-select: none;
     -moz-user-select: none;

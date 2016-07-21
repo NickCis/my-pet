@@ -8,7 +8,9 @@ import pet from './pet';
 import candidate from './candidate';
 import pet_info from './pet_info';
 
-const rootReducer = combineReducers({
+import { LOGOUT } from '../actions/login';
+
+const appReducer = combineReducers({
   login,
   page,
   user,
@@ -17,5 +19,13 @@ const rootReducer = combineReducers({
   candidate,
   pet_info
 });
+
+
+const rootReducer = (state, action) => {
+  if(action.type === LOGOUT)
+    state = undefined;
+
+  return appReducer(state, action);
+}
 
 export default rootReducer
