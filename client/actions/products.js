@@ -8,6 +8,11 @@ export const NEW_IMAGE = 'NEW_IMAGE';
 export const FINISHED_IMAGE = 'FINISHED_IMAGE';
 export const ERROR_IMAGE = 'ERROR_IMAGE';
 
+export const REQ_DEL_PRODUCT = "REQ_DEL_PRODUCT";
+export const FINISHED_DEL_PRODUCT = "FINISHED_DEL_PRODUCT";
+export const ERROR_DEL_PRODUCT = "ERROR_DEL_PRODUCT";
+
+// Prods
 function errorProducts(error){
 	return{
 		type: LIST_ERROR_PRODUCT,
@@ -29,7 +34,7 @@ function requestProducts(){
 }
 
 
-
+// IMAGES :: no se usan
 function requestImage(){
 	return {
 		type: NEW_IMAGE
@@ -47,6 +52,27 @@ function finishedImage(){
 	return{
 		type: FINISHED_IMAGE,
 		image
+	}
+}
+
+// DEL PRODUCT
+function errorDelProduct(error){
+	return{
+		type: ERROR_DEL_PRODUCT,
+		error
+	}
+}
+
+function finishedDelProduct(id){
+	return{
+		type: FINISHED_DEL_PRODUCT,
+		id
+	}
+}
+
+function reqDelProduct(){
+	return{
+		type: REQ_DEL_PRODUCT,
 	}
 }
 
@@ -92,20 +118,15 @@ export function fetchImage(product,image){
 	};
 }
 
-
-export function fetchAll(name){
-	console.log("FETCH ALL " ) ;
-	return(dispatch,getState) => {
-		(dispatch(fetchProducts(name)) || Promise.resolve())
-			.then( response => response.json())
-			.then( products => {
-				console.log(products);
-				dispatch(fetchedProducts(products))
-			})
-			
-			.then( getState =>  {
-				dispatch(fetchImage(name,0));
-			}) 
-			.then ( () =>  {} ) 
-	}
+export function delProduct(productId){
+	return(dispatch, getState) => {
+		dispatch(reqDelProduct());
+		return fetch(`api/product/${productId}`,{
+			method: 'DELETE'
+		})
+			.then(response => response.json())
+			.then( id => dispatch(finishedDelProduct(id)))
+			.then( () => {} ) 
+			.catch( error => dispatch( errorDelProduct(error)));
+	};
 }

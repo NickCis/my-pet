@@ -4,7 +4,10 @@ import {
 	LIST_ERROR_PRODUCT,
 	NEW_IMAGE,
 	FINISHED_IMAGE ,
-	ERROR_IMAGE
+	ERROR_IMAGE,
+	REQ_DEL_PRODUCT,
+	FINISHED_DEL_PRODUCT,
+	ERROR_DEL_PRODUCT
 } from '../actions/products.js'
 
 export default function(state={}, action) {
@@ -47,6 +50,24 @@ export default function(state={}, action) {
 				error: action.error
 			};
 
+		case REQ_DEL_PRODUCT:
+			return{
+				isFetching: true,
+				delFinished: false
+			};
+
+		case FINISHED_DEL_PRODUCT:
+			return{
+				isFetching: false,
+				delFinished: true,
+				id : action.id
+			};
+
+		case ERROR_DEL_PRODUCT:
+			return{
+				isFetching:false,
+				error:action.error
+			};
 	}
 	return state;
 }
