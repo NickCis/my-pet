@@ -22,7 +22,7 @@ class ProductsList extends Component{
 			return this.renderForm();
 		return (
 			<div className="alert alert-success" role="alert">
-				Producto cargado correctamente
+				Compraste satisfactoriamente! Muchas gracias por tu compra
 			</div>
 		)
 	}
@@ -33,7 +33,7 @@ class ProductsList extends Component{
 		}
 
 		return(
-			<form className="form-products-list" onSubmit= { onSubmit } >
+			<form className="form-products-list"  >
 				<h2 className="form-newProduct-heading"> Encuentra lo que buscas ! </h2>
 					<div className="container">
 						<div className="row">
@@ -68,15 +68,13 @@ class ProductsList extends Component{
 					</div>
 				);
 			})
-		}
-	}
+		} }
 
 }
 
 const mapStateToProps = state => {
 	return {
 		products : state.productsList.products,
-		//isFetching: state.newProduct.isFetching,
 		delFinished: state.productsList.delFinished
 		//error: state.newProduct.error
 	};
