@@ -11,7 +11,7 @@ export default class Item extends Component {
   render() {
     const { img, name } = this.props;
     return (
-      <li className='in-deck' data-id={ this.props['data-id'] } style={{position: 'relative' }}>
+      <li className='in-deck' data-id={ this.props['data-id'] }>
          <div className="panel panel-default">
            <div className="panel-body">
              <img src={ img } />

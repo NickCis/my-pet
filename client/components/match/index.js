@@ -51,8 +51,11 @@ export default class Match extends Component {
 
   getThrowOutHandler() {
     return e => {
+      // XXX: por algun problema raro, los eventos se estan llamando muchas veces
+      const petId = e.target.getAttribute('data-id');
+
       if(this.props.onLike)
-        this.props.onLike({result: e.throwDirection == 1});
+        this.props.onLike({result: e.throwDirection == 1, id: petId});
     };
   }
 

@@ -7,8 +7,8 @@ export function post(req, res, next) {
   next.ifError(req.params.validationError({
     required: ['pet1', 'pet2', 'result'],
     properties: {
-      pet1: {type: 'integer'},
-      pet2: {type: 'integer'},
+      pet1: {type: ['integer', 'string']},
+      pet2: {type: ['integer', 'string']},
       result: { type: ['integer', 'boolean'] }
     }
   }));

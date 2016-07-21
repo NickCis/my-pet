@@ -39,7 +39,7 @@ class Matching extends Component {
       if(!lastCandidate)
         return;
 
-      const idTo = lastCandidate.id,
+      const idTo = e.id || lastCandidate.id,
         idFrom = this.props.pet;
 
       this.props.likePet(idFrom, idTo, e.result);

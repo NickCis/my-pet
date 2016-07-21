@@ -39,7 +39,6 @@ export function removeCandidate(idPet, idCandidate) {
 }
 
 function shouldGetCandidates(state, idPet) {
-  console.log(`idPet ${idPet}`);
   if(idPet == state.candidate.pet){
     if(state.candidate.candidates.length || state.candidate.isLoading)
       return false;
