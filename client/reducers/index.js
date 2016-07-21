@@ -5,13 +5,15 @@ import login from './login';
 import user from './user';
 import profile from './profile';
 import newProduct from './newProduct';
+import productsList from './productsList';
 
 const rootReducer = combineReducers({
   login,
   page,
   user,
   profile,
-  newProduct
+  newProduct,
+  productsList
 });
 
 export default rootReducer

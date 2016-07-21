@@ -9,7 +9,8 @@ export default function(state={}, action) {
 	switch (action.type){
 		case NEW_PRODUCT:
 			return {
-				isFetching: true
+				isFetching: true,
+				finished: false
 			};
 
 		case FINISHED_PRODUCT:

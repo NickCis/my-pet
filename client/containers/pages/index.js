@@ -17,3 +17,6 @@ export { Profile };
 
 import NewProduct from './new_product';
 export { NewProduct };
+
+import ProductsList from './products_list';
+export { ProductsList };

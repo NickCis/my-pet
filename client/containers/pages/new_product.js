@@ -103,7 +103,7 @@ class NewProduct extends Component{
 						backgroundColor: 'rgb(238, 238, 238)'
 					}} onDrop={onDrop } />
 				</div>
-					<LoadingButton isLoading={ isFetching } disabled={ isFetching }>Publicar</LoadingButton>
+					<LoadingButton className="btn btn-success pull-right" isLoading={ isFetching } disabled={ isFetching }>Publicar</LoadingButton>
 			</form>
 		);
 	}

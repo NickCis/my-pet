@@ -139,7 +139,7 @@ export function getWithName(request,response,next){
 	next.ifError(request.params.validationError({
 		required : [ 'name' ],
 		properties : {
-			name: { type : 'string', minLength: 5}
+			name: { type : 'string', minLength: 0}
 		}
 	}));
 
@@ -171,6 +171,7 @@ export function deleteProduct(request, response, next){
 	console.log("SERVER QUERY :" ,query);
 	request.db.doQuery(query)
 	.then(queryResult => {
+
 		console.log("QUERY RESULT :::" ,queryResult);
 		if (queryResult.rows.length >0){
 			const product_id = queryResult.rows[0].product_id;
