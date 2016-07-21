@@ -9,14 +9,26 @@ import Navbar from '../components/navbar';
 import * as Pages from './pages';
 
 class App extends Component {
+  renderCurrentPage() {
+    const { currentPage } = this.props;
+    switch(currentPage.type.displayName){
+      case 'Connect(Home)':
+        return currentPage;
+    }
+
+    return (
+      <div className='container'>
+        { currentPage }
+      </div>
+    );
+  }
+
   render() {
-    const { currentPage, username, onChangePage, onLogout } = this.props;
+    const { username, onChangePage, onLogout } = this.props;
     return (
       <div>
         <Navbar onChangePage={ onChangePage } username={ username } onLogout={ onLogout }/>
-        <div className='container'>
-          { currentPage }
-        </div>
+        { this.renderCurrentPage() }
       </div>
     );
   }
