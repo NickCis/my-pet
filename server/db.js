@@ -98,7 +98,7 @@ export function create(config) {
       )`,
     `CREATE TABLE IF NOT EXISTS "product_images" (
           id serial NOT NULL,
-          id_product integer references products(id),
+          id_product integer references products(id) ON DELETE CASCADE,
           image text,
           PRIMARY KEY (id)
       )`,
