@@ -26,7 +26,6 @@ export default class Navbar extends Component {
               <ul className="dropdown-menu">
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Profile/profile') }>Perfil</a></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Profile/pet') }>Mascotas</a></li>
-              <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#">Venta</a></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Matching') }>Matching</a></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('Match') }>Notificaciones </a></li>
               <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#" onClick={ this.getChangePageHandler('NewProduct') }>Venta</a></li>

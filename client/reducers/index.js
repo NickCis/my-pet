@@ -22,7 +22,7 @@ const appReducer = combineReducers({
   candidate,
   pet_info,
   match,
-  like
+  like,
   newProduct,
   productsList
 });
