@@ -51,3 +51,23 @@ export function get(req, res, next) {
     .catch(err => res.send(new ApiError(500, err)))
     .then(() => next());
 }
+
+export function del(req, res, next) {
+  next.ifError(req.hasDBError());
+  next.ifError(req.hasSessionError());
+  next.ifError(req.params.validationError({
+    required: ['from', 'to'],
+    properties: {
+      from: {type: ['integer', 'string']},
+      to: {type: ['integer', 'string']}
+    }
+  }));
+
+  const sql = `DELETE from likes WHERE pet1 = ${req.params.from} AND pet2 = ${req.params.to}`;
+  return req.db.doQuery(sql)
+    .then(result => {
+      res.json(200, { success: true });
+    })
+    .catch(err => res.json(new ApiError(500, err)))
+    .then(() => nex());
+}

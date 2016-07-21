@@ -11,6 +11,7 @@ import {
 import { likePet } from '../../actions/like';
 
 import Panel from '../../components/panel';
+import PetList from '../../components/pet_list';
 import LoadingButton from '../../components/loading_button';
 
 import Match from '../../components/match';
@@ -56,7 +57,7 @@ class Matching extends Component {
       return (
         <div>
           <p className="text-center">
-            <span className="glyphicon glyphicon-heart" style={{color: 'red', fontSize: '40px'}}/>
+            <span className="glyphicon glyphicon-fire" style={{color: 'red', fontSize: '40px'}}/>
           </p>
           <p className="text-center">
             Lamentablemente no hay m&aacute;s candidatos. Intenta m&aacute;s tarde.
@@ -81,46 +82,25 @@ class Matching extends Component {
     );
   }
 
-  getSelectPetHandler(petId) {
-    return e => {
+  getPetListClickHandler() {
+    return (e, pet) => {
       e.preventDefault();
-      this.props.getCandidate(petId);
+      this.props.getCandidate(pet.id);
     };
   }
 
-  renderPet(pet) {
-    const className = pet.id == this.props.pet ? 'active' : '';
-    return (
-      <li role="presentation" className={ className } key={ pet.id }><a href="#" onClick={ this.getSelectPetHandler(pet.id) }>{ pet.name }</a></li>
-    );
-  }
-
-  renderPetList() {
-    const { pets } = this.props;
-    if(pets.length)
-      return pets.map(pet => this.renderPet(pet));
-
-    return (
-        <li role="presentation" style={{ color: 'grey' }}>
-          <p className="text-center" style={{ margin: '10px 0 0' }}>
-            <span className="glyphicon glyphicon-option-horizontal" />
-          </p>
-          <p className="text-center">No tenes mascotas</p>
-        </li>
-    );
-  }
-
   render() {
-    const { petsIsLoading } = this.props;
+    const { petsIsLoading, pets, pet } = this.props;
 
     return (
       <div className="row">
         <div className="col-xs-12 col-sm-3">
-          <Panel title="Mascotas" loading={ petsIsLoading }>
-            <ul className="nav nav-pills nav-stacked nav-profile">
-              { this.renderPetList() }
-            </ul>
-          </Panel>
+          <PetList
+            loading={ petsIsLoading }
+            pets={ pets }
+            currentPet={ pet }
+            onClick={ this.getPetListClickHandler() }
+          />
         </div>
         <div className="col-xs-12 col-sm-9">
           { this.renderMatching() }

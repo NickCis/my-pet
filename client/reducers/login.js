@@ -1,4 +1,9 @@
-import { REQUEST_LOGIN, FINISHED_LOGIN, ERROR_LOGIN } from '../actions/login';
+import {
+  REQUEST_LOGIN,
+  FINISHED_LOGIN,
+  ERROR_LOGIN,
+  INVALIDATE_LOGIN
+} from '../actions/login';
 
 export default function(state={}, action) {
   switch(action.type) {
@@ -19,6 +24,13 @@ export default function(state={}, action) {
       return {
         isFetching: false,
         error: action.error
+      };
+
+    case INVALIDATE_LOGIN:
+      return {
+        ...state,
+        error: undefined,
+        isFetching: false
       };
   }
 

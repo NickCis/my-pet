@@ -102,7 +102,7 @@ class PetTab extends Component {
     return (
       <li className="list-group-item">
         <p className="text-center">
-          <span className="glyphicon glyphicon-heart-empty" style={{color: 'red', fontSize: '32px'}}/>
+          <span className="glyphicon glyphicon-heart" style={{color: 'red', fontSize: '32px'}}/>
         </p>
         <p className="text-center">
           Agrega a tus seres m&aacute;s queridos

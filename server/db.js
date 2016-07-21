@@ -84,6 +84,10 @@ export function create(config) {
           id serial NOT NULL,
           username varchar(40) NOT NULL,
           password varchar(40) NOT NULL,
+          name varchar(40) NOT NULL,
+          surname varchar(40) NOT NULL,
+          email varchar(40) NOT NULL,
+          tel varchar(40) NOT NULL,
           PRIMARY KEY (id),
           UNIQUE(username)
       )`,

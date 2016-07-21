@@ -80,7 +80,7 @@ describe('Server', () => {
 
     it('should create a user', () => {
       return endpoint()
-        .send({ username: 'admin', password: 'admin'})
+        .send({ username: 'admin', password: 'admin', name: 'Administrador', surname: 'Del Sistema', email: 'admin@del-sistema.com', tel: '12345678'})
         .expectStatus(200)
         .expectBody({
           success: true

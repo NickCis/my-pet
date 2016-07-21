@@ -13,8 +13,13 @@ class Profile extends Component {
   getProfileFormSubmitHandler() {
     return ev => {
       ev.preventDefault();
+      const { password, name, surname, email, tel } = ev.target;
       this.props.updateProfile({
-        password: ev.target.password.value
+        password: password.value,
+        name: name.value,
+        surname: surname.value,
+        email: email.value,
+        tel: tel.value
       });
     };
   }
@@ -44,11 +49,25 @@ class Profile extends Component {
         <form onSubmit={ this.getProfileFormSubmitHandler() }>
           { this.renderProfileTabResult() }
           <div className="form-group">
-            <label htmlFor="">Contrase&ntilde;a</label>
-            <input name="password" type="password" className="form-control" placeholder="Contrase&ntilde;a" required pattern=".{5,}" title="Minimo 5 caracteres" disabled={ profile.isLoading }/>
-            <p className="help-block">Minimo 5 car&aacute;cteres</p>
+            <label htmlFor="password">Contrase&ntilde;a</label>
+            <input type="password" id="password" className="form-control" placeholder="Password" required disabled={ profile.isLoading } required pattern=".{5,}" title="Minimo 5 caracteres" />
+            <p className="help-block">M&aacute;s de 6 car&aacute;cteres</p>
           </div>
           <div className="form-group">
+            <label htmlFor="name">Nombre</label>
+            <input type="text" id="name" className="form-control" placeholder="Nombre" required disabled={ profile.isLoading } required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="surname">Apellido</label>
+            <input type="text" id="surname" className="form-control" placeholder="Apellido" required disabled={ profile.isLoading } required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">E-Mail</label>
+            <input type="email" id="email" className="form-control" placeholder="Email" required disabled={ profile.isLoading } required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="tel">Tel&eacute;fono</label>
+            <input type="text" id="tel" className="form-control" placeholder="Tel&eacute;fono" required disabled={ profile.isLoading } required />
           </div>
           <LoadingButton isLoading={ profile.isLoading } type="submit" className="btn btn-default pull-right" disabled={ profile.isLoading }>Guardar</LoadingButton>
         </form>
